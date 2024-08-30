@@ -1,62 +1,27 @@
 <script setup>
+import { bookdetailService } from '@/api/bookdetail';
 import NavBar from '@/components/NavBar.vue';
-const tableData = [
-    {
-        chapter: '第一回',
-        name: 'Tom',
+import { useTokenStore } from '@/stores/token';
+import { ref } from 'vue';
+const chaptersData = ref([
+])
+const bookname = ref('')
+const bookDescription = ref('')
+const author = ref('')
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
+const bookdetail = async () => {
+    let response = await bookdetailService()
+    chaptersData.value = response.data.chapters
+    bookDescription = response.data.bookDescription
+    author = response.data.author
+    bookname = response.data.bookname
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
+}
 
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
-
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
-
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
-
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
-
-    },
-    {
-        chapter: '第一回',
-        name: 'Tom',
-
-    },
-]
+bookdetail()
 </script>
 
 <template>
@@ -72,10 +37,9 @@ const tableData = [
                 </div>
             </template>
             <div class="book-description"> <!-- 用于限制内容的高度 -->
-                《活着》是中国当代作家余华创作的长篇虚构小说，首次发表于《收获》1992年第6期。
-                《活着》讲述了在大时代背景下，随着内战、三反五反、大跃进、“文化大革命”等社会变革，徐福贵的人生和家庭不断经受着苦难，到了最后所有亲人都先后离他而去，仅剩下年老的他和一头老牛相依为命。小说以普通、平实的故事情节讲述了在急剧变革的时代中福贵的不幸遭遇和坎坷命运。
-                <p><strong>作者：</strong> 余华</p>
-                <p><strong>评分：</strong> ★★★★☆</p>
+                {{ bookDescription }}
+                <p><strong>作者：</strong> {{ author }}</p>
+
             </div>
 
         </el-card>
@@ -93,7 +57,7 @@ const tableData = [
     <div class="table-container">
         <el-table :data="tableData" style="width: 40%; height: 250px;">
             <el-table-column prop="chapter" label="章节数" width="300" align="left" />
-            <el-table-column prop="name" label="章节" width="300" align="left" />
+            <el-table-column prop="name" label="章节名" width="300" align="left" />
 
         </el-table>
     </div>
@@ -142,7 +106,7 @@ const tableData = [
     max-height: 200px;
 }
 
-.table-container{
+.table-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
