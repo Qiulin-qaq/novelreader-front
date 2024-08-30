@@ -1,9 +1,8 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
 import App from './App.vue'
-import ElementPlus from 'element-plus'
+import NavBar from '@/components/NavBar.vue'
+import '@/assets/css/global.css'
 
 const app = createApp(App)
-app.use(ElementPlus)
+app.component('NavBar', NavBar)
 app.mount('#app')

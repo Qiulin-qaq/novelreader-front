@@ -1,0 +1,8 @@
+:root {
+    --font-size: medium;
+  }
+  
+  body {
+    font-size: var(--font-size);
+  }
+  

@@ -1,11 +1,16 @@
-<script setup>
-
-</script>
-
 <template>
+    <div id="NavBar">
+      <NavBar />
+      <router-view />
+    </div>
+    <div>
+      <p>你好</p>
+    </div>
+  </template>
   
-</template>
-
-<style scoped>
-
-</style>
+  <script>
+  export default {
+    name: 'App',
+  }
+  </script>
+  
