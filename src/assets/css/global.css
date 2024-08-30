@@ -1,8 +1,16 @@
 :root {
-    --font-size: medium;
-  }
-  
-  body {
-    font-size: var(--font-size);
-  }
-  
+  --font-size: 16px; /* 默认字体大小 */
+  --theme-bg-color: white;
+  --theme-text-color: black;
+  --theme-nav-bg-color: #f8f9fa;
+}
+
+body {
+  font-size: var(--font-size); /* 全局变量应用*/
+  background-color: var(--theme-bg-color);
+  color: var(--theme-text-color);
+}
+
+.el-menu {
+  background-color: var(--theme-nav-bg-color);
+}
