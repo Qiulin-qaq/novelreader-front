@@ -29,7 +29,7 @@
           <template #title>明暗调节</template>
           <el-menu-item index="4-2-1" @click="setTheme('sun')">亮色</el-menu-item>
           <el-menu-item index="4-2-2" @click="setTheme('dark')">暗色</el-menu-item>
-          <el-menu-item index="4-2-3" @click="setTheme('blue')">蓝色</el-menu-item>
+          
         </el-sub-menu>
       </el-sub-menu>
     </div>
