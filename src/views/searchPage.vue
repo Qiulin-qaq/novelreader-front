@@ -11,7 +11,7 @@ import Pagination from '@/components/Pagination.vue';
   <div class="container">
     <el-card style=" padding: 20px;">
       <div class="classic-book-section">
-        经典书目
+        搜索结果
     </div>
     
  <div id="BookList">

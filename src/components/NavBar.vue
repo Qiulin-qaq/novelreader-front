@@ -17,6 +17,9 @@
     </div>
     
     <div class="right-menu">
+      <div>
+        <Input/>
+      </div>
       <el-sub-menu index="4">
         <template #title>设置</template>
         <el-sub-menu index="4-1">
