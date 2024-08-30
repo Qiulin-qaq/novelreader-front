@@ -2,19 +2,15 @@
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import ElementPlus from 'element-plus'
-
-import router from '@/router'
-import { createPinia } from 'pinia'
-import piniapersist from 'pinia-plugin-persist'
-
-const pinia = createPinia()
-
-
-pinia.use(piniapersist)
+import { createPinia } from 'pinia';
+import NavBar from '@/components/NavBar.vue'
+import '@/assets/css/global.css'//引入使得全局生效
+import router from './router'; 
 const app = createApp(App)
-app.use(router)
-app.use(ElementPlus)
+const pinia = createPinia();
 
-app.use(pinia)
+
+app.component('NavBar', NavBar)
+app.use(pinia);//用于管理全局状态
+app.use(router); 
 app.mount('#app')

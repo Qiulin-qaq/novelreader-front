@@ -1,9 +1,14 @@
-<script setup>
-
-</script>
-
 <template>
-  <router-view></router-view>
-</template>
-
-<style scoped></style>
+    <div id="NavBar">
+      <NavBar />
+      <router-view />
+    </div>
+   
+  </template>
+  
+  <script>
+  export default {
+    name: 'App',
+  }
+  </script>
+  

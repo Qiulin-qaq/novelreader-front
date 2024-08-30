@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "element-plus": "^2.8.1",
-    "vue": "^3.4.29"
+    "pinia": "^2.2.2",
+    "vue": "^3.4.29",
+    "vue-router": "^4.4.3"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
+    "@types/lodash-es": "^4.17.12",
     "@vitejs/plugin-vue": "^5.0.5",
     "axios": "^1.7.5",
     "pinia": "^2.2.2",
