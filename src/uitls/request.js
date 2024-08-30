@@ -1,13 +1,33 @@
 import axios from 'axios'
+import { useTokenStore } from '@/stores/token';
 
 const baseurl = '/api';
 const instance = axios.create({ baseurl })
 
+// 请求拦截器
+
+instance.interceptors.request.use(
+    (config) => {
+        const tokenStore = useTokenStore()
+        if(tokenStore.token){
+            config.headers.Authorization = tokenStore.token
+        }
+
+        return config
+    },
+    (err) => {
+        Promise.reject(err)
+    }
+
+    
+)
+
+
 // 响应拦截器
 
 instance.interceptors.response.use(
-    result => {
-        return result.data
+    response => {
+        return response.data
 
     },
     err => {
