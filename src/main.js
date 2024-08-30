@@ -3,14 +3,19 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from 'pinia';
-import NavBar from '@/components/NavBar.vue'
+
+import piniaPersist from 'pinia-plugin-persist'
 import '@/assets/css/global.css'//引入使得全局生效
-import router from './router'; 
+import router from './router';
+import ElementPlus from 'element-plus'
+
+
 const app = createApp(App)
-const pinia = createPinia();
+const pinia = createPinia()
 
+pinia.use(piniaPersist)
 
-app.component('NavBar', NavBar)
+app.use(ElementPlus)
 app.use(pinia);//用于管理全局状态
-app.use(router); 
+app.use(router);
 app.mount('#app')

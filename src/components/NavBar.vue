@@ -1,12 +1,6 @@
 <template>
-  <el-menu
-    :default-active="activeIndex"
-    class="el-menu-demo"
-    mode="horizontal"
-    :ellipsis="false"
-    @select="handleSelect"
-    :style="{ fontSize: fontSize, backgroundColor: themeColor.navBgColor }"
-  >
+  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" :ellipsis="false" @select="handleSelect"
+    :style="{ fontSize: fontSize, backgroundColor: themeColor.navBgColor }">
     <div class="left-menu">
       <el-menu-item index="0">
         <img style="width: 50px;" src="/src/assets/png/logo.png" alt="logo" />
@@ -15,7 +9,7 @@
       <el-menu-item index="2" @click="navigateTo('/bookshelf')">书架</el-menu-item>
       <el-menu-item index="3" @click="navigateTo('/library')">书库</el-menu-item>
     </div>
-    
+
     <div class="right-menu">
       <el-sub-menu index="4">
         <template #title>设置</template>
@@ -29,7 +23,7 @@
           <template #title>明暗调节</template>
           <el-menu-item index="4-2-1" @click="setTheme('sun')">亮色</el-menu-item>
           <el-menu-item index="4-2-2" @click="setTheme('dark')">暗色</el-menu-item>
-          
+
         </el-sub-menu>
       </el-sub-menu>
     </div>
@@ -82,6 +76,7 @@ const setTheme = (theme: string) => {
 .right-menu {
   display: flex;
   align-items: center;
-  margin-left: auto; /* 将设置菜单项推到右侧 */
+  margin-left: auto;
+  /* 将设置菜单项推到右侧 */
 }
 </style>
