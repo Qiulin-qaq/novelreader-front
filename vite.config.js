@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -23,11 +22,11 @@ export default defineConfig({
     }
   },
   server: {
-    proxy:{
-      'api':{
+    proxy: {
+      '/api': {  // 确保这里是以斜杠开头的 '/api'
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: (path)=> path.replace(/^\/api/,''),
+        rewrite: (path) => path.replace(/^\/api/, ''), // 去掉 '/api' 前缀
       }
     }
   }

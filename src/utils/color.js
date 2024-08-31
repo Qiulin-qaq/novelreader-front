@@ -1,31 +1,54 @@
-// utils/color.js
-export const changeThemeColor = (theme) => {
-  let bgColor, textColor, navBgColor;
+import { defineStore } from 'pinia';
 
-  switch(theme) {
-      case "sun":
-          bgColor = "white";
-          textColor = "black";
-          navBgColor = "#f8f9fa";
+export const useThemeStore = defineStore('theme', {
+  state: () => ({
+    themeColor: {
+      bgColor: 'white',
+      textColor: 'black',
+      navBgColor: '#f8f9fa',
+      cardBgColor: 'white',
+      cardTextColor: 'black'
+    }
+  }),
+  actions: {
+    setTheme(theme) {
+      let themeColors;
+      switch(theme) {
+        case "sun":
+          themeColors = {
+            bgColor: "white",
+            textColor: "black",
+            navBgColor: "#f8f9fa",
+            cardBgColor: "white",
+            cardTextColor: "black"
+          };
           break;
-      case "dark":
-          bgColor = "#333";
-          textColor = "white";
-          navBgColor = "#555";
+        case "dark":
+          themeColors = {
+            bgColor: "#333",
+            textColor: "white",
+            navBgColor: "#555",
+            cardBgColor: "#444",
+            cardTextColor: "white"
+          };
           break;
-      case "blue":
-          bgColor = "#1E90FF";
-          textColor = "white";
-          navBgColor = "#1C6EA4";
+        default:
+          themeColors = {
+            bgColor: "white",
+            textColor: "black",
+            navBgColor: "#f8f9fa",
+            cardBgColor: "white",
+            cardTextColor: "black"
+          };
           break;
-      default:
-          bgColor = "white";
-          textColor = "black";
-          navBgColor = "#f8f9fa";
-          break;
+      }
+
+      this.themeColor = themeColors;
+      document.documentElement.style.setProperty('--theme-bg-color', themeColors.bgColor);
+      document.documentElement.style.setProperty('--theme-text-color', themeColors.textColor);
+      document.documentElement.style.setProperty('--theme-nav-bg-color', themeColors.navBgColor);
+      document.documentElement.style.setProperty('--theme-card-bg-color', themeColors.cardBgColor);
+      document.documentElement.style.setProperty('--theme-card-text-color', themeColors.cardTextColor);
+    }
   }
-
-  document.documentElement.style.setProperty('--theme-bg-color', bgColor);
-  document.documentElement.style.setProperty('--theme-text-color', textColor);
-  document.documentElement.style.setProperty('--theme-nav-bg-color', navBgColor);
-};
+});
