@@ -18,7 +18,13 @@
     
     <div class="right-menu">
       <div>
-        <Input/>
+        <el-input
+          v-model="searchQuery"
+          placeholder="搜索..."
+          @keyup.enter="handleSearch"
+          clearable
+          @clear="handleSearchClear"
+        />
       </div>
       <el-sub-menu index="4">
         <template #title>设置</template>
@@ -32,7 +38,6 @@
           <template #title>明暗调节</template>
           <el-menu-item index="4-2-1" @click="setTheme('sun')">亮色</el-menu-item>
           <el-menu-item index="4-2-2" @click="setTheme('dark')">暗色</el-menu-item>
-          
         </el-sub-menu>
       </el-sub-menu>
     </div>
@@ -42,16 +47,17 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useFontSizeStore } from '@/stores/fontSizeStore'; // 引入字体大小的 store
-import { useThemeStore } from '@/stores/themeStore'; // 引入主题颜色的 store
+import { useFontSizeStore } from '@/stores/fontSizeStore';
+import { useThemeStore } from '@/stores/themeStore';
 
 const activeIndex = ref('1');
 const router = useRouter();
 const fontSizeStore = useFontSizeStore();
 const themeStore = useThemeStore();
 
-const fontSize = fontSizeStore.fontSize; // 绑定全局字体大小状态
-const themeColor = themeStore.themeColor; // 绑定全局主题颜色状态
+const fontSize = fontSizeStore.fontSize;
+const themeColor = themeStore.themeColor;
+const searchQuery = ref(''); // 搜索关键词的绑定
 
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -62,11 +68,24 @@ const navigateTo = (path: string) => {
 };
 
 const setFontSize = (size: string) => {
-  fontSizeStore.setFontSize(size); // 更新全局字体大小
+  fontSizeStore.setFontSize(size);
 };
 
 const setTheme = (theme: string) => {
-  themeStore.setTheme(theme); // 更新全局主题颜色
+  themeStore.setTheme(theme);
+};
+
+// 处理搜索
+const handleSearch = () => {
+  if (searchQuery.value) {
+    router.push({ path: '/search', query: { query: searchQuery.value } });
+  }
+};
+
+// 处理搜索清空
+const handleSearchClear = () => {
+  searchQuery.value = '';
+  router.push({ path: '/search' });
 };
 </script>
 
