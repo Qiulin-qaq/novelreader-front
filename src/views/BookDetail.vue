@@ -1,13 +1,40 @@
-<script setup>
+<script lang="ts" setup>
 import { bookdetailService } from '@/api/bookdetail';
 import NavBar from '@/components/NavBar.vue';
 import { useTokenStore } from '@/stores/token';
 import { ref } from 'vue';
+
+import 'element-plus/dist/index.css';
+
+import { ElMessage } from 'element-plus'
+
+
+const isInBookShelf = ref(false);
+
+const toggleBookShelf = () => {
+  if (isInBookShelf.value) {
+    // 如果已经在书架中，则显示取消成功的消息
+    ElMessage({
+      message: '已从书架中移除',
+      type: 'warning',
+    });
+  } else {
+    // 如果不在书架中，则显示加入成功的消息
+    ElMessage({
+      message: '已加入书架',
+      type: 'success',
+    });
+  }
+  // 切换 isInBookShelf 的状态
+  isInBookShelf.value = !isInBookShelf.value;
+};
+
+
 const chaptersData = ref([
 ])
-const bookname = ref('')
-const bookDescription = ref('')
-const author = ref('')
+let bookname = ref('')
+let bookDescription = ref('')
+let author = ref('')
 
 
 
@@ -26,14 +53,14 @@ bookdetail()
 
 <template>
     <NavBar></NavBar>
-    <div style="display: flex; align-items: flex-start;"> <!-- 新增容器，并设置为 Flexbox -->
+    <div style="display: flex; align-items: flex-start;" class="background"> <!-- 新增容器，并设置为 Flexbox -->
         <img src="C:\Users\32602\Desktop\OIP.jpg" class="img">
         <!-- 添加 margin-right 来控制间距 -->
         <el-card class="card">
 
             <template #header>
                 <div class="card-header">
-                    <span>书名</span>
+                    <span>{{ bookname }}</span>
                 </div>
             </template>
             <div class="book-description"> <!-- 用于限制内容的高度 -->
@@ -47,15 +74,22 @@ bookdetail()
 
     </div>
     <div class="mb-4 button">
-
-        <el-button type="primary" size="large">加入书架</el-button>
+        <el-button 
+            :plain="true" 
+            @click="toggleBookShelf" 
+            type="primary" 
+            size="large"
+        >
+            {{ isInBookShelf ? '已加入书架' : '加入书架' }}
+        </el-button>
         <el-button type="success" size="large">开始阅读</el-button>
+
 
     </div>
     <el-divider />
 
     <div class="table-container">
-        <el-table :data="tableData" style="width: 40%; height: 250px;">
+        <el-table :data="chaptersData" style="width: 40%; height: 250px;">
             <el-table-column prop="chapter" label="章节数" width="300" align="left" />
             <el-table-column prop="name" label="章节名" width="300" align="left" />
 
@@ -67,6 +101,20 @@ bookdetail()
 </template>
 
 <style scope>
+/* .background {
+    background-image: linear-gradient(to right top, #acc9e4, #a4c3d8, #9ebdcc, #9ab7bf, #98b0b4);
+} */
+
+
+
+.el-alert {
+    margin: 20px 0 0;
+}
+
+.el-alert:first-child {
+    margin: 0;
+}
+
 .img {
     width: 20%;
     margin-top: 50px;
@@ -75,7 +123,7 @@ bookdetail()
 }
 
 .card {
-    margin-top: 50px;
+    margin-top: 40px;
     width: 800px;
     height: 300px;
     /* 固定高度 */
@@ -86,7 +134,7 @@ bookdetail()
 
     display: flex;
     justify-content: flex-end;
-    /* 右对齐 */
+    
     margin-top: 10px;
     margin-right: 400px;
     gap: 80px;
