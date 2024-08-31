@@ -30,12 +30,7 @@
 
       <!-- 分页组件 -->
       <div id="Pagination" class="pagination-bottom">
-        <el-pagination
-          :current-page="currentPage"
-          :page-size="pageSize"
-          layout="prev, pager, next"
-          :total="totalBooks"
-          @current-change="handlePageUpdate"
+        <Pagination @update:page="handlePageUpdate"
         />
       </div>
     </el-card>
@@ -46,36 +41,37 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import Pagination from '@/components/Pagination.vue';
 
 // 保存书籍列表数据
 const books = ref([]);  
 // 当前页码
 const currentPage = ref(1);
-// 总书籍数，用于分页
+// 总书籍数
 const totalBooks = ref(0);
-const pageSize = ref(4);  // 每页显示4本书籍
+// 每页显示的书籍数量
+const pageSize = ref(4);  
 
 const router = useRouter(); // 初始化 router
 
-// 根据页码获取书籍数据
+// 获取书籍数据，传递分页参数
 const fetchBooks = async (page: number) => {
   try {
     const response = await axios.get('/api/Main', {
-      params: { page: page, pageSize: pageSize.value }  // 传递页码和页面大小作为参数
+      params: { page: page, pageSize: pageSize.value }  // 传递分页参数
     });
     const fetchedBooks = response.data.data;
+    totalBooks.value = response.data.total || 0; // 设置总书籍数量
     
-    if (fetchedBooks.length > 0) {
+    if (fetchedBooks && fetchedBooks.length > 0) {
       books.value = fetchedBooks;
-      totalBooks.value = response.data.total || 0;  // 设置总书籍数量
     } else {
+      console.log("No books found, displaying placeholder");
       books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
-      totalBooks.value = 0;
     }
   } catch (error) {
-    console.error("Failed to fetch books:", error);
+    console.error("Failed to fetch books:", error.message);
     books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
-    totalBooks.value = 0;
   }
 };
 
