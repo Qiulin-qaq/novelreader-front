@@ -1,16 +1,22 @@
 :root {
   --font-size: 16px; /* 默认字体大小 */
-  --theme-bg-color: white;
-  --theme-text-color: black;
-  --theme-nav-bg-color: #f8f9fa;
+  --theme-bg-color: white; /* 页面背景颜色 */
+  --theme-text-color: black; /* 文字颜色 */
+  --theme-nav-bg-color: #f8f9fa; /* 导航栏背景颜色 */
+  --theme-card-bg-color: #ffffff; /* 卡片背景颜色 */
+  --theme-card-text-color: #000000; /* 卡片文字颜色 */
+  --theme-button-bg-color: #007bff; /* 按钮背景颜色 */
+  --theme-button-text-color: #ffffff; /* 按钮文字颜色 */
 }
 
 body {
-  font-size: var(--font-size); /* 全局变量应用*/
-  background-color: var(--theme-bg-color);
-  color: var(--theme-text-color);
+  font-size: var(--font-size); /* 全局字体大小 */
+  background-color: var(--theme-bg-color); /* 应用全局背景颜色 */
+  color: var(--theme-text-color); /* 应用全局文字颜色 */
 }
 
 .el-menu {
-  background-color: var(--theme-nav-bg-color);
+  background-color: var(--theme-nav-bg-color); /* 应用导航栏背景颜色 */
 }
+
+

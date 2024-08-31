@@ -3,12 +3,12 @@
     <NavBar />
     <router-view />
   </div>
-  
+
   <div class="container">
     <el-card class="fixed-card">
-      <div class="classic-book-section">经典书目</div>
+      <div class="classic-book-section">搜索结果</div>
 
-      <!-- 如果有书籍内容，显示书籍列表；否则显示提示消息或空白卡片 -->
+      <!-- 显示搜索结果列表 -->
       <div v-if="books.length > 0" id="BookList" class="book-list">
         <el-card 
           v-for="(book, index) in books" 
@@ -27,63 +27,47 @@
           <img src="/src/assets/png/logo.png" alt="Placeholder" class="book-cover" />
         </el-card>
       </div>
-
-      <!-- 分页组件 -->
-      <div id="Pagination" class="pagination-bottom">
-        <Pagination @update:page="handlePageUpdate"
-        />
-      </div>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
-import Pagination from '@/components/Pagination.vue';
 
-// 保存书籍列表数据
+// 保存搜索结果
 const books = ref([]);  
-// 当前页码
-const currentPage = ref(1);
-// 总书籍数
-const totalBooks = ref(0);
-// 每页显示的书籍数量
-const pageSize = ref(4);  
-
 const router = useRouter(); // 初始化 router
+const route = useRoute(); // 获取当前路由
 
-// 获取书籍数据，传递分页参数
-const fetchBooks = async (page: number) => {
+// 获取搜索结果数据
+const fetchSearchResults = async (query: string) => {
   try {
-    const response = await axios.get('/api/Main', {
-      params: { page: page, pageSize: pageSize.value }  // 传递分页参数
+    // 发送 GET 请求，查询参数通过 URL 传递
+    const response = await axios.get('/api/search', {
+      params: { query }  // 将查询参数添加到 GET 请求中
     });
-    const fetchedBooks = response.data.data;
-    totalBooks.value = response.data.total || 0; // 设置总书籍数量
-    
-    if (fetchedBooks && fetchedBooks.length > 0) {
-      books.value = fetchedBooks;
+    const resultlist = response.data.data;
+
+    if (resultlist.length > 0) {
+      books.value = resultlist;
     } else {
-      console.log("No books found, displaying placeholder");
       books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
     }
   } catch (error) {
-    console.error("Failed to fetch books:", error.message);
+    console.error("Failed to fetch search results:", error);
     books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
   }
 };
 
-// 处理页码更新
-const handlePageUpdate = (newPage: number) => {
-  currentPage.value = newPage;
-  fetchBooks(newPage); // 根据新的页码获取数据
-};
-
-// 初始化时加载第一页的数据
-fetchBooks(currentPage.value);
-
+// 在组件挂载时执行搜索请求
+onMounted(() => {
+  const query = route.query.query as string;
+  if (query) {
+    fetchSearchResults(query);
+  }
+});
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
   router.push(`/detail/${fileId}`);
@@ -141,11 +125,5 @@ const navigateToDetail = (fileId: number) => {
   color: #999;
   text-align: center;
   padding: 50px 0;
-}
-
-.pagination-bottom {
-  display: flex;
-  justify-content: center;
-  align-self: end;
 }
 </style>
