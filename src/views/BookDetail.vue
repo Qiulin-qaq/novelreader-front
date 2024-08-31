@@ -12,21 +12,21 @@ import { ElMessage } from 'element-plus'
 const isInBookShelf = ref(false);
 
 const toggleBookShelf = () => {
-  if (isInBookShelf.value) {
-    // 如果已经在书架中，则显示取消成功的消息
-    ElMessage({
-      message: '已从书架中移除',
-      type: 'warning',
-    });
-  } else {
-    // 如果不在书架中，则显示加入成功的消息
-    ElMessage({
-      message: '已加入书架',
-      type: 'success',
-    });
-  }
-  // 切换 isInBookShelf 的状态
-  isInBookShelf.value = !isInBookShelf.value;
+    if (isInBookShelf.value) {
+        // 如果已经在书架中，则显示取消成功的消息
+        ElMessage({
+            message: '已从书架中移除',
+            type: 'warning',
+        });
+    } else {
+        // 如果不在书架中，则显示加入成功的消息
+        ElMessage({
+            message: '已加入书架',
+            type: 'success',
+        });
+    }
+    // 切换 isInBookShelf 的状态
+    isInBookShelf.value = !isInBookShelf.value;
 };
 
 
@@ -53,19 +53,30 @@ bookdetail()
 
 <template>
     <NavBar></NavBar>
+
     <div style="display: flex; align-items: flex-start;" class="background"> <!-- 新增容器，并设置为 Flexbox -->
         <img src="C:\Users\32602\Desktop\OIP.jpg" class="img">
         <!-- 添加 margin-right 来控制间距 -->
+
         <el-card class="card">
 
             <template #header>
                 <div class="card-header">
-                    <span>{{ bookname }}</span>
+
+                    <span>{{ bookname }}<strong>作者：</strong> {{ author }}</span>
                 </div>
             </template>
-            <div class="book-description"> <!-- 用于限制内容的高度 -->
+            <div class="book-description "> <!-- 用于限制内容的高度 -->
                 {{ bookDescription }}
-                <p><strong>作者：</strong> {{ author }}</p>
+
+            </div>
+
+            <div class="mb-4 button">
+
+                <el-button :plain="true" @click="toggleBookShelf" type="primary" size="large">
+                    {{ isInBookShelf ? '已加入书架' : '加入书架' }}
+                </el-button>
+                <el-button type="success" size="large">开始阅读</el-button>
 
             </div>
 
@@ -73,19 +84,7 @@ bookdetail()
 
 
     </div>
-    <div class="mb-4 button">
-        <el-button 
-            :plain="true" 
-            @click="toggleBookShelf" 
-            type="primary" 
-            size="large"
-        >
-            {{ isInBookShelf ? '已加入书架' : '加入书架' }}
-        </el-button>
-        <el-button type="success" size="large">开始阅读</el-button>
 
-
-    </div>
     <el-divider />
 
     <div class="table-container">
@@ -101,10 +100,13 @@ bookdetail()
 </template>
 
 <style scope>
-/* .background {
-    background-image: linear-gradient(to right top, #acc9e4, #a4c3d8, #9ebdcc, #9ab7bf, #98b0b4);
-} */
-
+.background {
+    background-image: url('../assets/png/5c880f7819c25.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 500px;
+}
 
 
 .el-alert {
@@ -117,13 +119,13 @@ bookdetail()
 
 .img {
     width: 20%;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-left: 200px;
     margin-right: 200px;
 }
 
 .card {
-    margin-top: 40px;
+    margin-top:70px;
     width: 800px;
     height: 300px;
     /* 固定高度 */
@@ -134,14 +136,14 @@ bookdetail()
 
     display: flex;
     justify-content: flex-end;
-    
+
     margin-top: 10px;
-    margin-right: 400px;
+    margin-right: 250px;
     gap: 80px;
 }
 
 .book-description {
-    height: 100%;
+    height: 150px;
     /* 使用父容器的高度 */
     overflow-y: auto;
     /* 超出内容时显示滚动条 */
