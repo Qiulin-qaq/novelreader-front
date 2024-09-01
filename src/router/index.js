@@ -6,6 +6,8 @@ import searchPage from '@/views/searchPage.vue';
 import BookDetail from '@/views/BookDetail.vue';
 import Books from '@/views/Books.vue'
 
+import LoginVue from '@/views/Login.vue'; // 假设组件文件名为 Login.vue
+import SignUp from '@/views/Signup.vue';  
 
 // 定义路由
 const routes = [
@@ -29,6 +31,12 @@ const routes = [
   },
   
   
+  { path: "/User/login",
+     component: LoginVue },
+  {
+    path: "/User/signup",
+    component: SignUp,
+  },
 ];
 
 // 创建并导出路由实例
