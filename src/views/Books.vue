@@ -1,26 +1,25 @@
 <template>
   <Navbar></Navbar>
-
-  <!-- 全选和部分选择 -->
-  <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"
-    style="margin-top: 30px; margin-left: 30px;">
-    全选
-  </el-checkbox>
-  <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-    <el-checkbox v-for="type in types" :key="type" :label="type" :value="type" style="margin-left: 30px;">
-      {{ type }}
+  <div>
+    <!-- 全选和部分选择 -->
+    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"
+      style="margin-top: 30px; margin-left: 300px;">
+      全选
     </el-checkbox>
-  </el-checkbox-group>
+    <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
+      <el-checkbox v-for="type in types" :key="type" :label="type" :value="type" style="margin-left: 300px;">
+        {{ type }}
+      </el-checkbox>
+    </el-checkbox-group>
+  </div>
 
+  <el-divider />
   <!-- 显示过滤后的书籍 -->
-  <div class="books-container">
-    <div class="book-item" v-for="book in filteredBooks" :key="book.id">
-      <img :src="book.picture" alt="book image" class="book-image" />
-      <div class="book-info">
-        <h3>{{ book.title }}</h3>
-        <p>作者: {{ book.author }}</p>
-      </div>
-    </div>
+  <div class="books-container ">
+    <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id">
+      <template #header>{{ book.title }}</template>
+      <img :src="book.picture" style="width: 100%" alt="Cover Image" />
+    </el-card>
   </div>
 </template>
 <script lang="ts" setup>
@@ -32,24 +31,95 @@ import { booksService } from '@/api/books';
 const novels = ref([{
   "id": 1,
   "title": "Mystery of the Old House",
-  "picture": "oldhouse.jpg",
+  "picture": "img/background.jpg",
   "author": "John Doe",
   "type": true
 },
 {
   "id": 2,
   "title": "Science Wonders",
-  "picture": "science.jpg",
+  "picture": "img/background.jpg",
   "author": "Jane Smith",
   "type": true
 },
 {
   "id": 3,
   "title": "The Cooking Guide",
-  "picture": "cooking.jpg",
+  "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-},]); // 初始化为空数组
+},
+{
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+},
+{
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+},
+{
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+},
+{
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+}, {
+  "id": 3,
+  "title": "The Cooking Guide",
+  "picture": "img/background.jpg",
+  "author": "Chef Luigi",
+  "type": false
+},
+]); // 初始化为空数组
 const checkedtypes = ref([]);
 const checkAll = ref(false);
 const types = ['本站推荐', '用户导入']; // 代表两种类型
@@ -104,7 +174,23 @@ watch(filteredBooks, (newVal, oldVal) => {
 .books-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  /* 在容器内水平分布 */
+  gap: 50px;
+  row-gap: 150px;
+  margin-left: 100px;
+  margin-top: 150px;
+  padding-bottom: 50px;
+  /* 底部添加额外空间 */
+  background-color: #f8f9fa;
+  /* 背景色为淡灰色 */
+  padding: 20px;
+  border-radius: 10px;
 }
+
+
+
+
 
 .book-item {
   border: 1px solid #ddd;
@@ -122,5 +208,43 @@ watch(filteredBooks, (newVal, oldVal) => {
 
 .book-info {
   margin-top: 10px;
+}
+
+.el-card {
+  height: 300px;
+  width: 300px;
+  margin-top: -100px;
+  border-radius: 10px;
+  /* 圆角效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 添加阴影效果 */
+  overflow: hidden;
+  /* 确保内容不会溢出 */
+  transition: transform 0.2s, box-shadow 0.2s;
+  /* 添加动画效果 */
+}
+
+.el-card:hover {
+  transform: translateY(-10px);
+  /* 悬停时轻微抬升 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* 悬停时增加阴影 */
+}
+
+.el-card img {
+  border-bottom: 1px solid #ddd;
+  /* 图片与内容之间添加分隔线 */
+}
+
+.el-card header {
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 10px;
+  background-color: #f5f5f5;
+  /* 添加背景色 */
+}
+
+.el-card .book-info {
+  padding: 15px;
 }
 </style>
