@@ -1,13 +1,11 @@
 <template>
   <Navbar></Navbar>
-  <div>
-    <!-- 全选和部分选择 -->
-    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange"
-      style="margin-top: 30px; margin-left: 300px;">
+  <div class="checkbox-container">
+    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
       全选
     </el-checkbox>
     <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-      <el-checkbox v-for="type in types" :key="type" :label="type" :value="type" style="margin-left: 300px;">
+      <el-checkbox v-for="type in types" :key="type" :label="type" :value="type">
         {{ type }}
       </el-checkbox>
     </el-checkbox-group>
@@ -76,43 +74,37 @@ const novels = ref([{
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
   "author": "Chef Luigi",
   "type": false
-}, {
-  "id": 3,
-  "title": "The Cooking Guide",
-  "picture": "img/background.jpg",
-  "author": "Chef Luigi",
-  "type": false
-}, {
+},{
   "id": 3,
   "title": "The Cooking Guide",
   "picture": "img/background.jpg",
@@ -174,19 +166,17 @@ watch(filteredBooks, (newVal, oldVal) => {
 .books-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  /* 在容器内水平分布 */
+  justify-content: flex-start;  /* 左对齐卡片 */
   gap: 50px;
   row-gap: 150px;
   margin-left: 100px;
   margin-top: 150px;
   padding-bottom: 50px;
-  /* 底部添加额外空间 */
   background-color: #f8f9fa;
-  /* 背景色为淡灰色 */
   padding: 20px;
   border-radius: 10px;
 }
+
 
 
 
@@ -214,37 +204,66 @@ watch(filteredBooks, (newVal, oldVal) => {
   height: 300px;
   width: 300px;
   margin-top: -100px;
-  border-radius: 10px;
-  /* 圆角效果 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* 添加阴影效果 */
-  overflow: hidden;
-  /* 确保内容不会溢出 */
-  transition: transform 0.2s, box-shadow 0.2s;
-  /* 添加动画效果 */
+  border-radius: 10px;  /* 圆角效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 添加阴影效果 */
+  overflow: hidden;  /* 确保内容不会溢出 */
+  transition: transform 0.2s, box-shadow 0.2s;  /* 添加动画效果 */
 }
 
 .el-card:hover {
-  transform: translateY(-10px);
-  /* 悬停时轻微抬升 */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  /* 悬停时增加阴影 */
+  transform: translateY(-10px);  /* 悬停时轻微抬升 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* 悬停时增加阴影 */
 }
 
 .el-card img {
-  border-bottom: 1px solid #ddd;
-  /* 图片与内容之间添加分隔线 */
+  border-bottom: 1px solid #ddd;  /* 图片与内容之间添加分隔线 */
 }
 
 .el-card header {
   font-weight: bold;
   font-size: 1.2em;
   padding: 10px;
-  background-color: #f5f5f5;
-  /* 添加背景色 */
+  background-color: #f5f5f5;  /* 添加背景色 */
 }
 
 .el-card .book-info {
   padding: 15px;
 }
+
+
+.checkbox-container {
+  margin-top: 30px;
+  margin-left: 300px;
+  background-color: #fff; /* 背景颜色 */
+  padding: 10px 20px; /* 内边距 */
+  border-radius: 8px; /* 圆角 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+  width: 50%;
+}
+
+.checkbox-container .el-checkbox {
+  margin-right: 20px; /* 复选框之间的间距 */
+  font-size: 16px; /* 调整字体大小 */
+  color: #333; /* 字体颜色 */
+}
+
+.checkbox-container .el-checkbox:hover {
+  color: #007bff; /* 悬停时改变字体颜色 */
+}
+
+.checkbox-container .el-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 控制复选框之间的间距 */
+}
+
+.checkbox-container .el-checkbox__input.is-checked .el-checkbox__inner {
+  background-color: #007bff; /* 选中时的背景颜色 */
+  border-color: #007bff; /* 选中时的边框颜色 */
+}
+
+.checkbox-container .el-checkbox__input.is-checked .el-checkbox__inner::after {
+  border-color: #fff; /* 选中时的勾颜色 */
+}
+
 </style>
