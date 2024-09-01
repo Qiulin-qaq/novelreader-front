@@ -2,7 +2,7 @@
 import { bookdetailService } from '@/api/bookdetail';
 import NavBar from '@/components/NavBar.vue';
 import { useTokenStore } from '@/stores/token';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import 'element-plus/dist/index.css';
 
@@ -47,8 +47,10 @@ const bookdetail = async () => {
 
 
 }
+onMounted(() => {
+    bookdetail()
+})
 
-bookdetail()
 </script>
 
 <template>
@@ -125,7 +127,7 @@ bookdetail()
 }
 
 .card {
-    margin-top:70px;
+    margin-top: 70px;
     width: 800px;
     height: 300px;
     /* 固定高度 */

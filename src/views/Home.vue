@@ -1,20 +1,15 @@
 <template>
-  <div id="NavBar">
-    <NavBar />
-    <router-view />
-  </div>
-  
+  <NavBar></NavBar>
+
+
+
   <div class="container">
     <el-card class="fixed-card">
       <div class="classic-book-section">经典书目</div>
 
       <!-- 如果有书籍内容，显示书籍列表；否则显示提示消息或空白卡片 -->
       <div v-if="books.length > 0" id="BookList" class="book-list">
-        <el-card 
-          v-for="(book, index) in books" 
-          :key="index" 
-          class="book-card" 
-          @click="navigateToDetail(book.id)" 
+        <el-card v-for="(book, index) in books" :key="index" class="book-card" @click="navigateToDetail(book.id)"
           style="cursor: pointer;">
           <template #header>{{ book.title }}</template>
           <img :src="book.picture" alt="Book Cover" class="book-cover" />
@@ -30,8 +25,7 @@
 
       <!-- 分页组件 -->
       <div id="Pagination" class="pagination-bottom">
-        <Pagination @update:page="handlePageUpdate"
-        />
+        <Pagination @update:page="handlePageUpdate" />
       </div>
     </el-card>
   </div>
@@ -44,13 +38,13 @@ import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
 
 // 保存书籍列表数据
-const books = ref([]);  
+const books = ref([]);
 // 当前页码
 const currentPage = ref(1);
 // 总书籍数
 const totalBooks = ref(0);
 // 每页显示的书籍数量
-const pageSize = ref(4);  
+const pageSize = ref(4);
 
 const router = useRouter(); // 初始化 router
 
@@ -62,7 +56,7 @@ const fetchBooks = async (page: number) => {
     });
     const fetchedBooks = response.data.data;
     totalBooks.value = response.data.total || 0; // 设置总书籍数量
-    
+
     if (fetchedBooks && fetchedBooks.length > 0) {
       books.value = fetchedBooks;
     } else {

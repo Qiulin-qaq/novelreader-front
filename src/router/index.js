@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import searchPage from '@/views/searchPage.vue';
 import BookDetail from '@/views/BookDetail.vue';
+import Books from '@/views/Books.vue'
+
 
 // 定义路由
 const routes = [
@@ -21,6 +23,11 @@ const routes = [
     path: '/book/:id',
     component: BookDetail
   },
+  {
+    path:'/books',
+    component: Books,
+  },
+  
   
 ];
 
