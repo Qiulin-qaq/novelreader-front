@@ -8,7 +8,7 @@ import piniaPersist from 'pinia-plugin-persist'
 import '@/assets/css/global.css'//引入使得全局生效
 import router from './router';
 import ElementPlus from 'element-plus'
-
+import "element-plus/dist/index.css";
 
 const app = createApp(App)
 const pinia = createPinia()

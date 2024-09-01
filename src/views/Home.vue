@@ -6,7 +6,9 @@
   
   <div class="container">
     <el-card class="fixed-card">
-      <div class="classic-book-section">经典书目</div>
+      <div class="classic-book-section">
+        <p class="font">经典书目</p>
+      </div>
 
       <!-- 如果有书籍内容，显示书籍列表；否则显示提示消息或空白卡片 -->
       <div v-if="books.length > 0" id="BookList" class="book-list">
@@ -30,8 +32,7 @@
 
       <!-- 分页组件 -->
       <div id="Pagination" class="pagination-bottom">
-        <Pagination @update:page="handlePageUpdate"
-        />
+        <Pagination @update:page="handlePageUpdate" />
       </div>
     </el-card>
   </div>
@@ -147,5 +148,9 @@ const navigateToDetail = (fileId: number) => {
   display: flex;
   justify-content: center;
   align-self: end;
+}
+
+.font {
+  font-size: var(--font-size); /* 使用全局CSS变量 */
 }
 </style>
