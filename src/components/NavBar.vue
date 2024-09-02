@@ -5,7 +5,7 @@
       <el-menu-item index="0">
         <img style="width: 50px;" src="/src/assets/png/logo.png" alt="logo" />
       </el-menu-item>
-      <el-menu-item index="1" @click="navigateTo('/')">主页</el-menu-item>
+      <el-menu-item index="1" @click="navigateTo('/Main')">主页</el-menu-item>
       <el-menu-item index="2" @click="navigateTo('/bookshelf')">书架</el-menu-item>
       <el-menu-item index="3" @click="navigateTo('/library')">书库</el-menu-item>
     </div>

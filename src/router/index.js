@@ -24,6 +24,8 @@ const routes = [
     path: "/User/signup",
     component: SignUp,
   },
+ 
+
 ];
 
 // 创建并导出路由实例

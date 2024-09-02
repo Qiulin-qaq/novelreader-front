@@ -4,6 +4,9 @@
     <router-view />
   </div>
   
+  <div id="Bot">
+    <Bot/>
+  </div>
   <div class="container">
     <el-card class="fixed-card">
       <div class="classic-book-section">
@@ -43,6 +46,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
+import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
 
 // 保存书籍列表数据
 const books = ref([]);  
@@ -55,11 +59,25 @@ const pageSize = ref(4);
 
 const router = useRouter(); // 初始化 router
 
+// 获取 token
+const tokenStore = useTokenStore();
+const token = tokenStore.token;
+
 // 获取书籍数据，传递分页参数
 const fetchBooks = async (page: number) => {
+  // 如果没有token，重定向到登录页面
+  if (!token) {
+    console.warn("No token found, redirecting to login page.");
+    router.push('/User/login'); 
+    return;
+  }
+
   try {
     const response = await axios.get('/api/Main', {
-      params: { page: page, pageSize: pageSize.value }  // 传递分页参数
+      params: { page: page, pageSize: pageSize.value },  // 传递分页参数
+      headers: {
+        'Authorization': `Bearer ${token}`  // 添加 Authorization 头
+      }
     });
     const fetchedBooks = response.data.data;
     totalBooks.value = response.data.total || 0; // 设置总书籍数量
@@ -75,6 +93,7 @@ const fetchBooks = async (page: number) => {
     books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
   }
 };
+
 
 // 处理页码更新
 const handlePageUpdate = (newPage: number) => {

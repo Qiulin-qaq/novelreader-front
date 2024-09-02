@@ -35,18 +35,26 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
 
 // 保存搜索结果
 const books = ref([]);  
 const router = useRouter(); // 初始化 router
 const route = useRoute(); // 获取当前路由
 
+// 获取 token
+const tokenStore = useTokenStore();
+const token = tokenStore.token;
+
 // 获取搜索结果数据
 const fetchSearchResults = async (query: string) => {
   try {
     // 发送 GET 请求，查询参数通过 URL 传递
     const response = await axios.get('/api/search', {
-      params: { query }  // 将查询参数添加到 GET 请求中
+      params: { query },  // 将查询参数添加到 GET 请求中
+      headers: {
+        'Authorization': `Bearer ${token}`  // 添加 Authorization 头
+      }
     });
     const resultlist = response.data.data;
 
@@ -63,11 +71,19 @@ const fetchSearchResults = async (query: string) => {
 
 // 在组件挂载时执行搜索请求
 onMounted(() => {
+  // 如果没有token，重定向到登录页面
+  if (!token) {
+    console.warn("No token found, redirecting to login page.");
+    router.push('/User/login'); // 假设你的登录页面路径是 /login
+    return;
+  }
+
   const query = route.query.query as string;
   if (query) {
     fetchSearchResults(query);
   }
 });
+
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
   router.push(`/detail/${fileId}`);
