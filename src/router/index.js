@@ -26,7 +26,7 @@ const routes = [
   },
   {
     path: '/book/:id',
-    component: BookDetail
+    component: BookDetail,
     meta: { requiresAuth: true }
   },
   {

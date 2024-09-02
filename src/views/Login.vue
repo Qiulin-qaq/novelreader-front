@@ -39,7 +39,7 @@ const rules = {
 // 绑定数据，复用注册表单的注册模型
 // 登录函数
 const router = useRouter();
-// const tokenStore = useTokenStore();
+const tokenStore = useTokenStore();
 
 const login = async () => {
   try {
@@ -49,7 +49,7 @@ const login = async () => {
       // 成功登录
       ElMessage.success(result.msg);
       // // 把得到的token存储到pinia中
-      // tokenStore.setToken(result.data);
+      tokenStore.setToken(result.data);
       // // 跳转到首页  借助路由完成
       router.push("/Main");
       // 清空表单数据
