@@ -39,7 +39,7 @@ const rules = {
 // 绑定数据，复用注册表单的注册模型
 // 登录函数
 const router = useRouter();
-const tokenStore = useTokenStore();
+// const tokenStore = useTokenStore();
 
 const login = async () => {
   try {
@@ -47,16 +47,16 @@ const login = async () => {
 
     if (result.code === 200) {
       // 成功登录
-      ElMessage.success( result.msg);
+      ElMessage.success(result.msg);
       // // 把得到的token存储到pinia中
-      tokenStore.setToken(result.data);
+      // tokenStore.setToken(result.data);
       // // 跳转到首页  借助路由完成
       router.push("/Main");
       // 清空表单数据
       clearRegisterData();
     } else {
       // 登录失败，显示后端返回的消息
-      ElMessage.error( result.msg);
+      ElMessage.error(result.msg);
     }
   } catch (err) {
     // 捕获网络或其他错误
@@ -80,31 +80,16 @@ const clearRegisterData = () => {
     <el-col :span="12" class="bg"></el-col>
     <el-col :span="6" :offset="3" class="form">
       <!-- 登录表单 -->
-      <el-form
-        ref="form"
-        size="large"
-        autocomplete="off"
-        :model="registerData"
-        :rules="rules"
-      >
+      <el-form ref="form" size="large" autocomplete="off" :model="registerData" :rules="rules">
         <el-form-item>
           <h1>登录</h1>
         </el-form-item>
         <el-form-item prop="username">
-          <el-input
-            :prefix-icon="User"
-            placeholder="请输入用户名"
-            v-model="registerData.username"
-          ></el-input>
+          <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input
-            name="password"
-            :prefix-icon="Lock"
-            type="password"
-            placeholder="请输入密码"
-            v-model="registerData.password"
-          ></el-input>
+          <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码"
+            v-model="registerData.password"></el-input>
         </el-form-item>
         <el-form-item class="flex">
           <div class="flex">
@@ -113,23 +98,13 @@ const clearRegisterData = () => {
         </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
-          <el-button
-            class="button"
-            type="primary"
-            auto-insert-space
-            @click="login"
-            >登录</el-button
-          >
+          <el-button class="button" type="primary" auto-insert-space @click="login">登录</el-button>
         </el-form-item>
         <el-form-item class="flex">
-          <el-link
-            type="info"
-            :underline="false"
-            @click="
-              router.push('/User/signup');
-              clearRegisterData();
-            "
-          >
+          <el-link type="info" :underline="false" @click="
+            router.push('/User/signup');
+          clearRegisterData();
+          ">
             注册 →
           </el-link>
         </el-form-item>

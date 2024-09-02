@@ -1,8 +1,12 @@
+import { useTokenStore } from "@/stores/token";
 import axios from "axios";
 import { ElMessage } from "element-plus";
 
+
+
 const baseURL = "/api";
 const instance = axios.create({ baseURL });
+import router from '@/router'
 
 // 添加响应拦截器
 instance.interceptors.response.use(
@@ -17,10 +21,29 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
+    
     // 处理网络错误等
     ElMessage.error("网络错误或服务异常，请稍后重试");
     return Promise.reject(error);
   }
 );
+
+
+
+// 请求拦截器
+instance.interceptors.request.use(
+  (config)=>{
+    const tokenStore = useTokenStore()
+
+    if(tokenStore.token){
+      config.headers.Authorization = 'Bearer '+ tokenStore.token
+    }
+    return config
+
+  },
+  (err)=>{
+    Promise.reject(err)
+  }
+)
 
 export default instance;
