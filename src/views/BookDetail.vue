@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { bookdetailService } from '@/api/bookdetail';
+import { bookdetailService } from '@/api/books'
 import NavBar from '@/components/NavBar.vue';
-import { useTokenStore } from '@/stores/token';
+
 import { onMounted, ref } from 'vue';
 
 import 'element-plus/dist/index.css';

@@ -26,7 +26,7 @@
       </div>
 
       <!-- 分页组件 -->
-      <div id="Pagination" class="pagination-bottom">
+      <div id="Pagination" class="pagination-bottom" >
         <Pagination @update:page="handlePageUpdate" />
       </div>
     </el-card>
@@ -82,7 +82,7 @@ fetchBooks(currentPage.value);
 
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
-  router.push(`/detail/${fileId}`);
+  router.push(`/book/1`);
 };
 </script>
 
@@ -143,6 +143,7 @@ const navigateToDetail = (fileId: number) => {
   display: flex;
   justify-content: center;
   align-self: end;
+  padding :20px;
 }
 
 .font {
