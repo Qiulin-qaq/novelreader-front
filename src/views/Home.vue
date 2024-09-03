@@ -106,45 +106,50 @@ fetchBooks(currentPage.value);
 
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
-  router.push(`/detail/${fileId}`);
+  router.push(`/books/${fileId}`);
 };
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  position: relative; 
+  height: 600px; /* Adjust the container height as needed */
+  padding: 20px; /* Compensate for the fixed navbar height */
 }
 
 .fixed-card {
   width: 80%;
-  min-height: 80vh;
-  padding: 20px;
+  height: 100%; /* Make the card take the full height of the container */
+  max-width: 1200px; /* Optional: set a max width */
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 20px;
+  grid-template-rows: 60px 1fr auto; 
+  margin-top: 0;
+  overflow: hidden; /* Prevent content overflow */
+  position: relative; /* Ensure that the pagination can be absolutely positioned relative to the card */
 }
 
 .classic-book-section {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
   padding: 10px 40px;
-  margin: 20px 0;
+  margin: 10px 0;
   font-family: 'Georgia', serif;
 }
 
 .book-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 10px;
 }
 
 .book-card {
   width: 100%;
-  height: 360px;
+  height: 350px; /* Adjust card height */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -164,12 +169,15 @@ const navigateToDetail = (fileId: number) => {
 }
 
 .pagination-bottom {
+  position: absolute;
+  bottom: 0; /* Positioned at the bottom of the card */
+  left: 50%;
+  transform: translateX(-50%); /* Center the pagination horizontally within the card */
+  width: auto;
   display: flex;
   justify-content: center;
-  align-self: end;
+  padding: 50px 0; /* Adjust padding as necessary */
+  align-items: center;
 }
 
-.font {
-  font-size: var(--font-size); /* 使用全局CSS变量 */
-}
 </style>

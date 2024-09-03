@@ -6,7 +6,6 @@
     :page-size="pageSize"
     :current-page="currentPage"
     @current-change="handlePageChange"
-    class="container"
   />
 </template>
 
@@ -28,11 +27,3 @@ const handlePageChange = (newPage: number) => {
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-</style>
