@@ -21,7 +21,7 @@ instance.interceptors.response.use(
     }
   },
   (error) => {
-    
+
     // 处理网络错误等
     ElMessage.error("网络错误或服务异常，请稍后重试");
     return Promise.reject(error);
@@ -32,16 +32,16 @@ instance.interceptors.response.use(
 
 // 请求拦截器
 instance.interceptors.request.use(
-  (config)=>{
+  (config) => {
     const tokenStore = useTokenStore()
 
-    if(tokenStore.token){
-      config.headers.Authorization = 'Bearer '+ tokenStore.token
+    if (tokenStore.token) {
+      config.headers.Authorization = 'Bearer ' + tokenStore.token
     }
     return config
 
   },
-  (err)=>{
+  (err) => {
     Promise.reject(err)
   }
 )

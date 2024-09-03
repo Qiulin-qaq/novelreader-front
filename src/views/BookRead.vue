@@ -14,18 +14,15 @@ const book_id = 1
 const chapter_id = 1
 const bookread = async () => {
     try {
-        // const book_id = route.params.book_id 
-        // const chapter_id = route.params.chapter_id; 
+        
         let response = await bookreadService(book_id, chapter_id)
 
         // 解构 response 中的 data 对象
-        const { title, content } = response.data;
+        bookinfo.value.title = response.data.title
 
-        // 设置 bookinfo
-        bookinfo.value.title = title || '无标题';
-        bookinfo.value.content = content || '无内容';
-        // bookinfo.value.title = response.data.title || '无标题'
-        // bookinfo.value.content = response.data.content || '无内容'
+        // 处理换行符，将 \n\n 替换为 <br>
+        bookinfo.value.content = response.data.content.replace(/\n\n/g, '<br><br>');
+       
     } catch (err) {
         ElMessage.error('加载书籍数据失败', err)
         bookinfo.value.title = '加载失败';
@@ -44,13 +41,13 @@ onMounted(() => {
 </script>
 
 <template>
-    
+
     <div class="container body">
         <el-card style="max-width: 1000px;">
             <template #header>
                 <div class="card-header">
-                    <span @click="router.back()"><svg t="1725347941906" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" p-id="1448" width="16" height="16">
+                    <span @click="router.back()"><svg t="1725347941906" class="icon" viewBox="0 0 1024 1024"
+                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1448" width="16" height="16">
                             <path
                                 d="M624.788992 204.047974 585.205965 164.464026 219.560038 530.185011 585.205965 895.864013 624.788992 856.280986 298.663014 530.16105Z"
                                 p-id="1449">
@@ -58,15 +55,13 @@ onMounted(() => {
                         </svg>
                         {{ bookinfo.title }}
                     </span>
-                    
+
                 </div>
             </template>
             <!-- 小说内容 -->
-            <div class="content">
-                {{ bookinfo.content }}
-            </div>
+            <div class="content" v-html="bookinfo.content"></div>
 
-            
+
 
         </el-card>
     </div>
@@ -89,13 +84,21 @@ onMounted(() => {
 }
 
 .content {
-    font-family: 'Arial', sans-serif; /* 字体 */
-    font-size: 20px; /* 字体大小 */
-    line-height: 1.6; /* 行高，增加可读性 */    
-    color: #333; /* 字体颜色 */
-    text-align: justify; /* 文字对齐方式 */
-    padding: 20px; /* 内边距，增加内容与边框之间的距离 */
-    word-spacing: 10px; /* 单词间距 */
-    letter-spacing: 0.5px; /* 字母间距 */
+    font-family: 'Arial', sans-serif;
+    /* 字体 */
+    font-size: 20px;
+    /* 字体大小 */
+    line-height: 1.6;
+    /* 行高，增加可读性 */
+    color: #333;
+    /* 字体颜色 */
+    text-align: justify;
+    /* 文字对齐方式 */
+    padding: 20px;
+    /* 内边距，增加内容与边框之间的距离 */
+    word-spacing: 10px;
+    /* 单词间距 */
+    letter-spacing: 0.5px;
+    /* 字母间距 */
 }
 </style>

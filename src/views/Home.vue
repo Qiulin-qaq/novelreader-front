@@ -1,8 +1,12 @@
 <template>
-  <NavBar></NavBar>
-
-
-
+  <div id="NavBar">
+    <NavBar />
+    <router-view />
+  </div>
+  
+  <div id="Bot">
+    <Bot/>
+  </div>
   <div class="container">
     <el-card class="fixed-card">
       <div class="classic-book-section">
@@ -11,7 +15,11 @@
 
       <!-- 如果有书籍内容，显示书籍列表；否则显示提示消息或空白卡片 -->
       <div v-if="books.length > 0" id="BookList" class="book-list">
-        <el-card v-for="(book, index) in books" :key="index" class="book-card" @click="navigateToDetail(book.id)"
+        <el-card 
+          v-for="(book, index) in books" 
+          :key="index" 
+          class="book-card" 
+          @click="navigateToDetail(book.id)" 
           style="cursor: pointer;">
           <template #header>{{ book.title }}</template>
           <img :src="book.picture" alt="Book Cover" class="book-cover" />
@@ -26,7 +34,7 @@
       </div>
 
       <!-- 分页组件 -->
-      <div id="Pagination" class="pagination-bottom" >
+      <div id="Pagination" class="pagination-bottom">
         <Pagination @update:page="handlePageUpdate" />
       </div>
     </el-card>
@@ -38,27 +46,42 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import Pagination from '@/components/Pagination.vue';
+import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
 
 // 保存书籍列表数据
-const books = ref([]);
+const books = ref([]);  
 // 当前页码
 const currentPage = ref(1);
 // 总书籍数
 const totalBooks = ref(0);
 // 每页显示的书籍数量
-const pageSize = ref(4);
+const pageSize = ref(4);  
 
 const router = useRouter(); // 初始化 router
 
+// 获取 token
+const tokenStore = useTokenStore();
+const token = tokenStore.token;
+
 // 获取书籍数据，传递分页参数
 const fetchBooks = async (page: number) => {
+  // 如果没有token，重定向到登录页面
+  if (!token) {
+    console.warn("No token found, redirecting to login page.");
+    router.push('/User/login'); 
+    return;
+  }
+
   try {
     const response = await axios.get('/api/Main', {
-      params: { page: page, pageSize: pageSize.value }  // 传递分页参数
+      params: { page: page, pageSize: pageSize.value },  // 传递分页参数
+      headers: {
+        'Authorization': `Bearer ${token}`  // 添加 Authorization 头
+      }
     });
     const fetchedBooks = response.data.data;
     totalBooks.value = response.data.total || 0; // 设置总书籍数量
-
+    
     if (fetchedBooks && fetchedBooks.length > 0) {
       books.value = fetchedBooks;
     } else {
@@ -71,6 +94,7 @@ const fetchBooks = async (page: number) => {
   }
 };
 
+
 // 处理页码更新
 const handlePageUpdate = (newPage: number) => {
   currentPage.value = newPage;
@@ -82,45 +106,50 @@ fetchBooks(currentPage.value);
 
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
-  router.push(`/book/1`);
+  router.push(`/books/${fileId}`);
 };
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  position: relative; 
+  height: 600px; /* Adjust the container height as needed */
+  padding: 20px; /* Compensate for the fixed navbar height */
 }
 
 .fixed-card {
   width: 80%;
-  min-height: 80vh;
-  padding: 20px;
+  height: 100%; /* Make the card take the full height of the container */
+  max-width: 1200px; /* Optional: set a max width */
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 20px;
+  grid-template-rows: 60px 1fr auto; 
+  margin-top: 0;
+  overflow: hidden; /* Prevent content overflow */
+  position: relative; /* Ensure that the pagination can be absolutely positioned relative to the card */
 }
 
 .classic-book-section {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
   padding: 10px 40px;
-  margin: 20px 0;
+  margin: 10px 0;
   font-family: 'Georgia', serif;
 }
 
 .book-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 10px;
 }
 
 .book-card {
   width: 100%;
-  height: 360px;
+  height: 350px; /* Adjust card height */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -140,13 +169,15 @@ const navigateToDetail = (fileId: number) => {
 }
 
 .pagination-bottom {
+  position: absolute;
+  bottom: 0; /* Positioned at the bottom of the card */
+  left: 50%;
+  transform: translateX(-50%); /* Center the pagination horizontally within the card */
+  width: auto;
   display: flex;
   justify-content: center;
-  align-self: end;
-  padding :20px;
+  padding: 50px 0; /* Adjust padding as necessary */
+  align-items: center;
 }
 
-.font {
-  font-size: var(--font-size); /* 使用全局CSS变量 */
-}
 </style>

@@ -1,63 +1,80 @@
 <script lang="ts" setup>
-import { bookdetailService } from '@/api/books'
+import { bookdetailService, getBookChaptersService } from '@/api/books';
 import NavBar from '@/components/NavBar.vue';
-
 import { onMounted, ref } from 'vue';
-
 import 'element-plus/dist/index.css';
-
-import { ElMessage } from 'element-plus'
-
+import { ElMessage } from 'element-plus';
+import { useRoute } from 'vue-router';
 
 const isInBookShelf = ref(false);
 
 const toggleBookShelf = () => {
     if (isInBookShelf.value) {
-        // 如果已经在书架中，则显示取消成功的消息
         ElMessage({
             message: '已从书架中移除',
             type: 'warning',
         });
     } else {
-        // 如果不在书架中，则显示加入成功的消息
         ElMessage({
             message: '已加入书架',
             type: 'success',
         });
     }
-    // 切换 isInBookShelf 的状态
     isInBookShelf.value = !isInBookShelf.value;
 };
 
-
-const chaptersData = ref([
-])
-let bookname = ref('')
-let bookDescription = ref('')
-let author = ref('')
-
-
+const chaptersData = ref([]);
+let bookname = ref('');
+let bookDescription = ref('');
+let author = ref('');
+let img = ref('');
+const route = useRoute();
+const bookId = route.params.id;
 
 const bookdetail = async () => {
-    let response = await bookdetailService()
-    chaptersData.value = response.data.chapters
-    bookDescription = response.data.bookDescription
-    author = response.data.author
-    bookname = response.data.bookname
 
+    try { // 获取书籍详情
+        const bookresponse = await bookdetailService(bookId);
+        const bookData = bookresponse.data[0];
+
+
+
+
+        img.value = bookData.picture;
+        bookDescription.value = bookData.description || "无描述";
+        author.value = bookData.author || "未知作者";
+        bookname.value = bookData.title || "无标题";
+    } catch (err) {
+        console.log(err)
+    }
 
 }
-onMounted(() => {
-    bookdetail()
-})
 
+const chaptersdetail = async () => {
+    try {
+        // 获取章节信息
+        const chaptersresponse = await getBookChaptersService(bookId);
+
+
+        chaptersData.value = chaptersresponse.data;
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+onMounted(() => {
+    bookdetail();
+    chaptersdetail()
+})
 </script>
+
+
 
 <template>
     <NavBar></NavBar>
 
     <div style="display: flex; align-items: flex-start;" class="background"> <!-- 新增容器，并设置为 Flexbox -->
-        <img src="C:\Users\32602\Desktop\OIP.jpg" class="img">
+        <img :src=img class="img">
         <!-- 添加 margin-right 来控制间距 -->
 
         <el-card class="card">
@@ -65,7 +82,11 @@ onMounted(() => {
             <template #header>
                 <div class="card-header">
 
-                    <span>{{ bookname }}<strong>作者：</strong> {{ author }}</span>
+                    <!-- <span>{{ bookname }}<strong>作者：</strong> {{ author }}</span> -->
+
+
+                    <span class="book-title">{{ bookname }}</span>
+                    <span class="author">作者：{{ author }}</span>
                 </div>
             </template>
             <div class="book-description "> <!-- 用于限制内容的高度 -->
@@ -91,8 +112,8 @@ onMounted(() => {
 
     <div class="table-container">
         <el-table :data="chaptersData" style="width: 40%; height: 250px;">
-            <el-table-column prop="chapter" label="章节数" width="300" align="left" />
-            <el-table-column prop="name" label="章节名" width="300" align="left" />
+            <el-table-column prop="cid" label="章节数" width="300" align="left" />
+            <el-table-column prop="title" label="章节名" width="300" align="left" />
 
         </el-table>
     </div>
@@ -162,5 +183,27 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    /* 垂直居中 */
+    gap: 20px;
+    /* 设置 title 和 author 之间的水平间距 */
+}
+
+.book-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    /* 你可以根据需要调整字体样式 */
+}
+
+.author {
+    font-size: 1.2em;
+    color: #666;
+    margin-left: 30px;
+    /* 自动占位，推送到最右边 */
 }
 </style>
