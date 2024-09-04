@@ -1,13 +1,16 @@
 <template>
+ 
   <el-pagination
     size="small"
+    background
     layout="prev, pager, next"
     :total="totalItems"
     :page-size="pageSize"
     :current-page="currentPage"
     @current-change="handlePageChange"
-    class="container"
+   
   />
+
 </template>
 
 <script setup lang="ts">
@@ -28,11 +31,4 @@ const handlePageChange = (newPage: number) => {
 };
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-</style>
+

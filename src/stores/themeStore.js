@@ -13,13 +13,10 @@ export const useThemeStore = defineStore('theme', {
       let themeColors;
       switch(theme) {
         case "sun":
-          themeColors = { bgColor: "white", textColor: "black", navBgColor: "#f8f9fa" };
+          themeColors = { bgColor: "#f9f9f9", textColor: "black", navBgColor: "#f8f9fa" };
           break;
         case "dark":
           themeColors = { bgColor: "#333", textColor: "white", navBgColor: "#555" };
-          break;
-        case "blue":
-          themeColors = { bgColor: "#1E90FF", textColor: "white", navBgColor: "#1C6EA4" };
           break;
         default:
           themeColors = { bgColor: "white", textColor: "black", navBgColor: "#f8f9fa" };

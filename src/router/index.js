@@ -5,7 +5,7 @@ import Home from '@/views/Home.vue';
 import searchPage from '@/views/searchPage.vue';
 import LoginVue from '@/views/Login.vue'; // 假设组件文件名为 Login.vue
 import SignUp from '@/views/Signup.vue';  
-
+import BookShelf from '@/views/BookShelf.vue';
 // 定义路由
 const routes = [
   {
@@ -24,6 +24,10 @@ const routes = [
     path: "/User/signup",
     component: SignUp,
   },
+  {
+    path:"/bookshelf",
+    component:BookShelf,
+  }
  
 
 ];
