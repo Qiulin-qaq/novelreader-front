@@ -80,8 +80,7 @@ import { ref, computed, onMounted, watch, reactive } from "vue";
 import { booksshelfService } from "@/api/booksshelf";
 import { useBookshelfStore } from "@/stores/bookshelf";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
-import axios from "@/utils/index";
-
+import axios from '@/utils/request'
 const novels = ref([]); // 初始化为空数组
 const checkedtypes = ref([]);
 const checkAll = ref(false);
