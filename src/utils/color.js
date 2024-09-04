@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 export const useThemeStore = defineStore('theme', {
   state: () => ({
     themeColor: {
-      bgColor: 'white',
+      bgColor: '#f9f9f9',
       textColor: 'black',
       navBgColor: '#f8f9fa',
       cardBgColor: 'white',
@@ -16,7 +16,7 @@ export const useThemeStore = defineStore('theme', {
       switch(theme) {
         case "sun":
           themeColors = {
-            bgColor: "white",
+            bgColor: "rgba(255, 255, 255, 0.58)",
             textColor: "black",
             navBgColor: "#f8f9fa",
             cardBgColor: "white",
@@ -29,7 +29,9 @@ export const useThemeStore = defineStore('theme', {
             textColor: "white",
             navBgColor: "#555",
             cardBgColor: "#444",
-            cardTextColor: "white"
+            cardTextColor: "white",
+            
+            
           };
           break;
         default:

@@ -10,6 +10,7 @@ import LoginVue from '@/views/Login.vue'; // 假设组件文件名为 Login.vue
 import SignUp from '@/views/Signup.vue';
 import { useTokenStore } from '@/stores/token';
 import BookRead from '@/views/BookRead.vue';
+import BookShelf from '@/views/BookShelf.vue';
 
 // 定义路由
 const routes = [
@@ -23,7 +24,7 @@ const routes = [
     path: '/search',
     name: 'searchPage',
     component: searchPage,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/books/:id',
@@ -50,8 +51,13 @@ const routes = [
   {
     path: "/books/read/",
     component: BookRead,
+    // meta: { requiresAuth: true }
   },
-  
+   {
+    path:"/bookshelf",
+    component:BookShelf,
+  }
+ 
   
 ];
 

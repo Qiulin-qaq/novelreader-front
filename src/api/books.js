@@ -6,11 +6,11 @@ export const booksService = () => {
     return request.get('/books')
 }
 
-export const bookreadService = (book_id, chapter_id) => {
+export const bookreadService = (book_id, relativeId) => {
     return request.get('/books/read', {
         params: {
             book_id: book_id,
-            chapter_id: chapter_id
+            relativeId: relativeId
         }
 
     });

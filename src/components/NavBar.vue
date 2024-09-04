@@ -7,7 +7,7 @@
       </el-menu-item>
       <el-menu-item index="1" @click="navigateTo('/Main')">主页</el-menu-item>
       <el-menu-item index="2" @click="navigateTo('/bookshelf')">书架</el-menu-item>
-      <el-menu-item index="3" @click="navigateTo('/library')">书库</el-menu-item>
+      <el-menu-item index="3" @click="navigateTo('/books')">书库</el-menu-item>
     </div>
 
     <div class="right-menu">

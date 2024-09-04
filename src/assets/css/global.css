@@ -1,6 +1,6 @@
 :root {
   --font-size: 16px; /* 默认字体大小 */
-  --theme-bg-color: white; /* 页面背景颜色 */
+  --theme-bg-color: rgba(255, 255, 255, 0.103); /* 页面背景颜色 */
   --theme-text-color: black; /* 文字颜色 */
   --theme-nav-bg-color: #f8f9fa; /* 导航栏背景颜色 */
   --theme-card-bg-color: #ffffff; /* 卡片背景颜色 */

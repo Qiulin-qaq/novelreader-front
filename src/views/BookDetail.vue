@@ -4,7 +4,7 @@ import NavBar from '@/components/NavBar.vue';
 import { onMounted, ref } from 'vue';
 import 'element-plus/dist/index.css';
 import { ElMessage } from 'element-plus';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const isInBookShelf = ref(false);
 
@@ -31,6 +31,21 @@ let img = ref('');
 const route = useRoute();
 const bookId = route.params.id;
 
+const router = useRouter();
+const startReading = () => {
+    if (chaptersData.value.length > 0) {
+        router.push({
+            path: '/books/read',
+            query: {
+                book_id: bookId,
+                relativeId: chaptersData.value[0].relativeId // 使用 chaptersData 的第一个 relativeId
+            }
+        });
+    } else {
+        ElMessage.error('章节数据尚未加载');
+    }
+};
+
 const bookdetail = async () => {
 
     try { // 获取书籍详情
@@ -50,6 +65,17 @@ const bookdetail = async () => {
 
 }
 
+// 处理表格行点击事件
+const handleRowClick = (row) => {
+    router.push({
+        path: '/books/read',
+        query: {
+            book_id: bookId,
+            relativeId: row.relativeId // 获取点击行的 relativeId
+        }
+    });
+};
+
 const chaptersdetail = async () => {
     try {
         // 获取章节信息
@@ -57,6 +83,9 @@ const chaptersdetail = async () => {
 
 
         chaptersData.value = chaptersresponse.data;
+
+        console.log(chaptersData.value)
+        console.log(chaptersData.value[0].relativeId)
     } catch (err) {
         console.log(err)
     }
@@ -99,7 +128,8 @@ onMounted(() => {
                 <el-button :plain="true" @click="toggleBookShelf" type="primary" size="large">
                     {{ isInBookShelf ? '已加入书架' : '加入书架' }}
                 </el-button>
-                <el-button type="success" size="large">开始阅读</el-button>
+                <el-button type="success" size="large"
+                    @click="startReading">开始阅读</el-button>
 
             </div>
 
@@ -111,8 +141,8 @@ onMounted(() => {
     <el-divider />
 
     <div class="table-container">
-        <el-table :data="chaptersData" style="width: 40%; height: 250px;">
-            <el-table-column prop="cid" label="章节数" width="300" align="left" />
+        <el-table :data="chaptersData" style="width: 40%; height: 250px;" @row-click="handleRowClick">
+            <el-table-column prop="relativeId" label="章节数" width="300" align="left" />
             <el-table-column prop="title" label="章节名" width="300" align="left" />
 
         </el-table>

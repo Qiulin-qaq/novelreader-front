@@ -1,12 +1,16 @@
 <template>
+ 
   <el-pagination
     size="small"
+    background
     layout="prev, pager, next"
     :total="totalItems"
     :page-size="pageSize"
     :current-page="currentPage"
     @current-change="handlePageChange"
+   
   />
+
 </template>
 
 <script setup lang="ts">
@@ -26,4 +30,5 @@ const handlePageChange = (newPage: number) => {
   emit('update:page', newPage);  // 通过 emit 传递页码给父组件
 };
 </script>
+
 
