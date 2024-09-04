@@ -91,11 +91,6 @@ const clearRegisterData = () => {
           <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码"
             v-model="registerData.password"></el-input>
         </el-form-item>
-        <el-form-item class="flex">
-          <div class="flex">
-            <el-checkbox>记住我</el-checkbox>
-          </div>
-        </el-form-item>
         <!-- 登录按钮 -->
         <el-form-item>
           <el-button class="button" type="primary" auto-insert-space @click="login">登录</el-button>
@@ -134,9 +129,10 @@ const clearRegisterData = () => {
       margin: 0 auto;
     }
 
-    .button {
-      width: 100%;
-    }
+    
+      .button {
+        width: 100%; // 确保按钮在表单容器内占满可用宽度
+      }
 
     .flex {
       width: 100%;
