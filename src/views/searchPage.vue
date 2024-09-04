@@ -17,7 +17,7 @@
           @click="navigateToDetail(book.id)" 
           style="cursor: pointer;">
           <template #header>{{ book.title }}</template>
-          <img :src="book.picture" alt="Book Cover" class="book-cover" />
+          <img src="/src/assets/png/logo.png" alt="Book Cover" class="book-cover" />
         </el-card>
       </div>
       <div v-else class="book-list">
@@ -86,7 +86,7 @@ onMounted(() => {
 
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
-  router.push(`/detail/${fileId}`);
+  router.push(`/books/${fileId}`);
 };
 </script>
 
