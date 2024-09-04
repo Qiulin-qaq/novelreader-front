@@ -16,7 +16,7 @@
   <div class="books-container ">
     <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id" @click="$router.push(`/books/${book.id}`)">
       <template #header>{{ book.title }}</template>
-      <img :src="book.picture" style="width: 100%" alt="Cover Image" />
+      <img src="/src/assets//png/logo.png" style="width: 100%" alt="Cover Image" />
     </el-card>
   </div>
 </template>

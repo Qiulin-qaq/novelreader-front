@@ -74,7 +74,7 @@ onMounted(() => {
     <NavBar></NavBar>
 
     <div style="display: flex; align-items: flex-start;" class="background"> <!-- 新增容器，并设置为 Flexbox -->
-        <img :src=img class="img">
+        <img src="/src/assets/png/logo.png" class="img">
         <!-- 添加 margin-right 来控制间距 -->
 
         <el-card class="card">
