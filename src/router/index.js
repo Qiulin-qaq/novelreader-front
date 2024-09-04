@@ -23,7 +23,7 @@ const routes = [
     path: '/search',
     name: 'searchPage',
     component: searchPage,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/books/:id',
@@ -50,6 +50,7 @@ const routes = [
   {
     path: "/books/read/",
     component: BookRead,
+    // meta: { requiresAuth: true }
   },
   
   
