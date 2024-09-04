@@ -106,7 +106,7 @@ fetchBooks(currentPage.value);
 
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
-  router.push(`/detail/${fileId}`);
+  router.push(`/books/${fileId}`);
 };
 </script>
 
