@@ -1,4 +1,5 @@
 <template>
+  <div class="background-blur">
   <div id="NavBar">
     <NavBar />
     <router-view />
@@ -29,10 +30,11 @@
       </div>
     </el-card>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
@@ -84,6 +86,16 @@ onMounted(() => {
   }
 });
 
+// 监听路由变化，自动更新搜索结果
+watch(
+  () => route.query.query, // 监听 query 参数的变化
+  (newQuery) => {
+    if (newQuery) {
+      fetchSearchResults(newQuery as string); // 搜索新的关键词
+    }
+  }
+);
+
 // 页面导航函数
 const navigateToDetail = (fileId: number) => {
   router.push(`/books/${fileId}`);
@@ -91,6 +103,16 @@ const navigateToDetail = (fileId: number) => {
 </script>
 
 <style scoped>
+.background-blur {
+  position: relative;
+}
+.background {
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png'); /* 正确的背景图片设置 */
+  background-size: cover; /* 背景图片自动适应容器 */
+  background-position: center; /* 背景居中显示 */
+  border-radius: 16px; /* 圆角 */
+  padding: 20px;
+}
 .container {
   display: flex;
   flex-direction: column;
