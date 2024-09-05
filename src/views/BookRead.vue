@@ -6,6 +6,8 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getBookChaptersService } from '@/api/books'
 
+
+
 const bookinfo = ref({
   title: '',
   content: '',
@@ -48,8 +50,8 @@ const bookread = async () => {
       .map(paragraph => `<p class="paragraph" style="text-indent: 2em; margin: 10px 0;">${paragraph}</p>`)
       .join('').replace(/\n\n/g, '<br><br>');
 
-      
-      
+
+
   } catch (err) {
     ElMessage.error('加载书籍数据失败');
     bookinfo.value.title = '加载失败';
@@ -69,7 +71,28 @@ const loadChapters = async () => {
   }
 };
 
-// 实现“下一章”功能
+// 跳转上一章
+
+const backChapter = () => {
+  const currentIndex = chaptersData.value.findIndex(
+    chapter => chapter.relativeId === parseInt(relativeId.value)
+  );
+
+  if (currentIndex === -1 || currentIndex === 0) {
+    ElMessage.info('已经是第一章');
+  } else {
+    const previousChapterId = chaptersData.value[currentIndex - 1].relativeId;
+    router.push({
+      path: '/books/read',
+      query: {
+        book_id: book_id.value,
+        relativeId: previousChapterId
+      }
+    });
+  }
+};
+
+// 跳转下一章
 const nextChapter = () => {
   const currentIndex = chaptersData.value.findIndex(
     chapter => chapter.relativeId === parseInt(relativeId.value)
@@ -118,6 +141,10 @@ onMounted(() => {
 
 
 <template>
+  <div>
+    <Bot />
+  </div>
+
   <div :class="['container', isDarkMode ? 'dark-mode' : 'light-mode']">
     <el-card :class="isDarkMode ? 'dark-mode' : 'light-mode'">
       <template #header>
@@ -139,6 +166,14 @@ onMounted(() => {
     </el-card>
     <!-- 垂直排列的按钮组 -->
     <div class="button-group">
+
+      <svg @click="backChapter" t="1725543274047" class="icon" viewBox="0 0 1024 1024" version="1.1"
+        xmlns="http://www.w3.org/2000/svg" p-id="6354" width="32" height="32">
+        <path
+          d="M512 64C264.8 64 64 264.8 64 512s200.8 448 448 448 448-200.8 448-448S759.2 64 512 64z m158.4 674.4L625.6 784l-272-272 272-272 45.6 45.6L444 512l226.4 226.4z"
+          p-id="6355"></path>
+      </svg>
+
       <svg t="1725448863092" class="icon" @click="nextChapter" viewBox="0 0 1024 1024" version="1.1"
         xmlns="http://www.w3.org/2000/svg" p-id="4247" width="32" height="32">
         <path
@@ -199,7 +234,8 @@ onMounted(() => {
 .paragraph {
   text-indent: 2em;
   margin: 10px 0;
-  color: inherit; /* 继承父元素的颜色 */
+  color: inherit;
+  /* 继承父元素的颜色 */
 }
 
 .dark-mode .paragraph {

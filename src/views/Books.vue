@@ -1,24 +1,26 @@
 <template>
-  <Navbar></Navbar>
-  <div class="checkbox-container">
-    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
-      全选
-    </el-checkbox>
-    <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-      <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
-        {{ status }}
+  <div class="background-blur">
+    <Navbar></Navbar>
+    <div class="checkbox-container">
+      <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
+        全选
       </el-checkbox>
-    </el-checkbox-group>
-  </div>
+      <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
+        <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
+          {{ status }}
+        </el-checkbox>
+      </el-checkbox-group>
+    </div>
 
-  <el-divider />
-  <!-- 显示过滤后的书籍 -->
-  <div class="books-container ">
-    <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id"
-      @click="$router.push(`/books/${book.id}`)">
-      <template #header>{{ book.title }}</template>
-      <img src="/src/assets//png/logo.png" style="width: 100%" alt="Cover Image" />
-    </el-card>
+    <el-divider />
+    <!-- 显示过滤后的书籍 -->
+    <div class="books-container ">
+      <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id"
+        @click="$router.push(`/books/${book.id}`)">
+        <template #header>{{ book.title }}</template>
+        <img :src="book.picture" style="width: 100%" alt="Cover Image" />
+      </el-card>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -154,7 +156,10 @@ watch(filteredBooks, (newVal, oldVal) => {
 
 .el-card img {
   border-bottom: 1px solid #ddd;
-  /* 图片与内容之间添加分隔线 */
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+  max-height: 200px;
 }
 
 .el-card header {
@@ -215,5 +220,22 @@ watch(filteredBooks, (newVal, oldVal) => {
 .checkbox-container .el-checkbox__input.is-checked .el-checkbox__inner::after {
   border-color: #fff;
   /* 选中时的勾颜色 */
+}
+
+.background-blur {
+  position: relative;
+}
+.background-blur::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png'); /* 背景图片 */
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px); /* 仅模糊背景图片 */
+  z-index: -1; /* 确保背景在所有内容的后面 */
 }
 </style>

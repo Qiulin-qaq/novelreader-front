@@ -23,11 +23,6 @@
           <el-menu-item index="4-1-2" @click="setFontSize('16px')">中号字体</el-menu-item>
           <el-menu-item index="4-1-3" @click="setFontSize('12px')">小号字体</el-menu-item>
         </el-sub-menu>
-        <el-sub-menu index="4-2">
-          <template #title>明暗调节</template>
-          <el-menu-item index="4-2-1" @click="setTheme('sun')">亮色</el-menu-item>
-          <el-menu-item index="4-2-2" @click="setTheme('dark')">暗色</el-menu-item>
-        </el-sub-menu>
       </el-sub-menu>
     </div>
   </el-menu>

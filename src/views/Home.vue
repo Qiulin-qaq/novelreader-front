@@ -1,11 +1,11 @@
 <template>
   <div>
-    <!-- 动画部分 -->
+    
     <div v-if="showAnimation" class="welcome-animation">
       <h1>Welcome to AI-Novel Reader</h1>
     </div>
 
-    <!-- 当动画结束时，显示主内容 -->
+    
     <div v-if="!showAnimation" class="main-content">
       <div id="NavBar">
         <NavBar />
@@ -200,7 +200,7 @@ onMounted(() => {
 .main-content {
   position: relative;
   z-index: 1;
-  padding-top: 60px;
+  
 }
 
 /* 背景图片容器 */
@@ -215,6 +215,8 @@ onMounted(() => {
   background-position: center;
   border-radius: 16px;
   padding: 20px;
+  margin-top: 70px;
+  width: 100;
 }
 
 /* 背景模糊效果 */
@@ -235,10 +237,10 @@ onMounted(() => {
 /* 轮播容器样式 */
 .carousel-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.8);
+  
   border-radius: 16px;
 }
 
@@ -271,5 +273,13 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.el-card img {
+  border-bottom: 1px solid #ddd;
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
 }
 </style>

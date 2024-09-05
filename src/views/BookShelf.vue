@@ -1,45 +1,45 @@
 <template>
   <div class="background-blur">
-  <div id="NavBar">
-    <Navbar />
-  </div>
-  <div class="container">
-    <el-button class="uploading-button" @click="dialog = true">上传小说</el-button>
-  </div>
-  <!-- draggable 允许拖拽 -->
-  <el-dialog v-model="dialog" width="500" title="上传小说" draggable @close="dialogClose">
-    <el-form label-width="80">
-      <el-upload v-model:file-list="fileList" class="upload-demo" :http-request="uploadFile" :limit="1"
-        :on-exceed="uploadExceed" :before-upload="beforeUpload" accept=".txt" :on-remove="uploadRemove">
-        <el-button type="primary">点击选择文件</el-button>
-        <template #tip>
-          <div class="el-upload__tip">请上传.txt文件,大小不超过30M</div>
-        </template>
-      </el-upload>
-    </el-form>
-  </el-dialog>
+    <div id="NavBar">
+      <Navbar />
+    </div>
+    <div class="container">
+      <el-button class="uploading-button" @click="dialog = true">上传小说</el-button>
+    </div>
+    <!-- draggable 允许拖拽 -->
+    <el-dialog v-model="dialog" width="500" title="上传小说" draggable @close="dialogClose">
+      <el-form label-width="80">
+        <el-upload v-model:file-list="fileList" class="upload-demo" :http-request="uploadFile" :limit="1"
+          :on-exceed="uploadExceed" :before-upload="beforeUpload" accept=".txt" :on-remove="uploadRemove">
+          <el-button type="primary">点击选择文件</el-button>
+          <template #tip>
+            <div class="el-upload__tip">请上传.txt文件,大小不超过30M</div>
+          </template>
+        </el-upload>
+      </el-form>
+    </el-dialog>
 
-  <div class="checkbox-container">
-    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
-      全选
-    </el-checkbox>
-    <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-      <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
-        {{ status }}
+    <div class="checkbox-container">
+      <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
+        全选
       </el-checkbox>
-    </el-checkbox-group>
-  </div>
+      <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
+        <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
+          {{ status }}
+        </el-checkbox>
+      </el-checkbox-group>
+    </div>
 
-  <el-divider />
-  <!-- 显示过滤后的书籍 -->
-  <div class="books-container">
-    <el-card style="max-width: 480px" v-for="book in filteredBooks" :key="book.id"
-      @click="$router.push(`/books/${book.id}`)">
-      <template #header>{{ book.title }}</template>
-      <!-- 将图片路径替换为固定路径 -->
-      <img src="/src/assets/png/logo.png" style="width: 100%" alt="Cover Image" />
-    </el-card>
-  </div></div>
+    <el-divider />
+    <!-- 显示过滤后的书籍 -->
+    <div class="books-container ">
+      <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id"
+        @click="$router.push(`/books/${book.id}`)">
+        <template #header>{{ book.title }}</template>
+        <img :src="book.picture" style="width: 100%" alt="Cover Image" />
+      </el-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -83,7 +83,7 @@ onMounted(() => {
 const filteredBooks = computed(() => {
   if (checkedtypes.value.length === 0) return novels.value;
   return novels.value.filter((book) =>
-    checkedtypes.value.includes(book.tystatuspe ? "本站推荐" : "用户导入")
+    checkedtypes.value.includes(book.status ? "本站推荐" : "用户导入")
   );
 });
 
@@ -195,6 +195,7 @@ const uploadRemove = () => {
 .background-blur {
   position: relative;
 }
+
 .background-blur::before {
   content: '';
   position: fixed;
@@ -202,12 +203,16 @@ const uploadRemove = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png'); /* 背景图片 */
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  /* 背景图片 */
   background-size: cover;
   background-position: center;
-  filter: blur(10px); /* 仅模糊背景图片 */
-  z-index: -1; /* 确保背景在所有内容的后面 */
+  filter: blur(10px);
+  /* 仅模糊背景图片 */
+  z-index: -1;
+  /* 确保背景在所有内容的后面 */
 }
+
 .books-container {
   display: flex;
   flex-wrap: wrap;
@@ -239,6 +244,10 @@ const uploadRemove = () => {
 
 .el-card img {
   border-bottom: 1px solid #ddd;
+  object-fit: contain;
+  width: 100%;
+  height: auto;
+  max-height: 200px;
 }
 
 .el-card header {
@@ -272,6 +281,6 @@ const uploadRemove = () => {
   position: absolute;
   top: 120px;
   right: 200px;
-  
+
 }
 </style>

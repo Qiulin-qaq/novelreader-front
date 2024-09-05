@@ -35,7 +35,7 @@ const routes = [
   {
     path: '/books',
     component: Books,
-    // meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }}
   },
 
 
@@ -56,6 +56,7 @@ const routes = [
    {
     path:"/bookshelf",
     component:BookShelf,
+    // meta: { requiresAuth: true }
   }
  
   
