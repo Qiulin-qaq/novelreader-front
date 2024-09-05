@@ -217,7 +217,7 @@ const uploadRemove = () => {
 .background-blur {
   position: relative;
 }
-.background-blur::before {
+.background-blur::before {/*在他之前创造一个图层*/
   content: '';
   position: fixed;
   top: 0;

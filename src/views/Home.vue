@@ -166,7 +166,7 @@ onMounted(() => {
   background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
   background-size: cover;
   background-position: center;
-  filter: blur(10px);
+  filter: blur(10px);/*模糊效果*/
   z-index: -1;
 }
 

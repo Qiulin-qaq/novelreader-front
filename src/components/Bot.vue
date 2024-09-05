@@ -53,17 +53,17 @@
   
   const dialogPosition = ref({ top: 100, left: 100 });
   
-  const draggableMan = ref<HTMLDivElement | null>(null);
+  const draggableMan = ref<HTMLDivElement | null>(null);//创建一个响应式应用
   const tokenStore = useTokenStore();
   const token = tokenStore.token;
   
   const startDrag = (event: MouseEvent | TouchEvent) => {
     const man = draggableMan.value;
     if (!man) return;
-    const startX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+    const startX = 'touches' in event ? event.touches[0].clientX : event.clientX;//如果触发触摸就记录x值，如果没有就触发点击
     const startY = 'touches' in event ? event.touches[0].clientY : event.clientY;
   
-    const rect = man.getBoundingClientRect();
+    const rect = man.getBoundingClientRect();//获取元素位置
     const offsetX = startX - rect.left;
     const offsetY = startY - rect.top;
   
@@ -85,14 +85,14 @@
   
     const stopDrag = () => {
       document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('touchmove', onMouseMove);
+      document.removeEventListener('touchmove', onMouseMove);//移除监听器
     };
   
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('touchmove', onMouseMove);
   
     document.addEventListener('mouseup', stopDrag, { once: true });
-    document.addEventListener('touchend', stopDrag, { once: true });
+    document.addEventListener('touchend', stopDrag, { once: true });//触发一次后自动移除
   };
   
   // 关闭对话框
@@ -142,7 +142,7 @@
     cursor: pointer;
     z-index: 1000;
     touch-action: none;
-  }
+  }/*margin是元素和元素之间分离，padding是元素于内容之间的分离*/
   
   .dialog {
     position: fixed;
