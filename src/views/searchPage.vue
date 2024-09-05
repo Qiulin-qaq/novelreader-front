@@ -1,36 +1,35 @@
 <template>
   <div class="background-blur">
-  <div id="NavBar">
-    <NavBar />
-    <router-view />
-  </div>
+    <div id="NavBar">
+      <NavBar />
+      <router-view />
+    </div>
+    <div>
+      <Bot />
+    </div>
 
-  <div class="container">
-    <el-card class="fixed-card">
-      <div class="classic-book-section">搜索结果</div>
+    <div class="container">
+      <el-card class="fixed-card">
+        <div class="classic-book-section">搜索结果</div>
 
-      <!-- 显示搜索结果列表 -->
-      <div v-if="books.length > 0" id="BookList" class="book-list">
-        <el-card 
-          v-for="(book, index) in books" 
-          :key="index" 
-          class="book-card" 
-          @click="navigateToDetail(book.id)" 
-          style="cursor: pointer;">
-          <template #header>{{ book.title }}</template>
-          <img src="/src/assets/png/logo.png" alt="Book Cover" class="book-cover" />
-        </el-card>
-      </div>
-      <div v-else class="book-list">
-        <!-- 空白卡片 -->
-        <el-card class="book-card">
-          <template #header>暂无内容</template>
-          <img src="/src/assets/png/logo.png" alt="Placeholder" class="book-cover" />
-        </el-card>
-      </div>
-    </el-card>
+        <!-- 显示搜索结果列表 -->
+        <div v-if="books.length > 0" id="BookList" class="book-list">
+          <el-card v-for="(book, index) in books" :key="index" class="book-card" @click="navigateToDetail(book.id)"
+            style="cursor: pointer;">
+            <template #header>{{ book.title }}</template>
+            <img :src="book.picture || '/src/assets/png/logo.png'" alt="Book Cover" class="book-cover" />
+          </el-card>
+        </div>
+        <div v-else class="book-list">
+          <!-- 空白卡片 -->
+          <el-card class="book-card">
+            <template #header>暂无内容</template>
+            <img src="/src/assets/png/logo.png" alt="Placeholder" class="book-cover" />
+          </el-card>
+        </div>
+      </el-card>
+    </div>
   </div>
-</div>
 </template>
 
 <script setup lang="ts">
@@ -38,9 +37,10 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
+import Bot from '@/components/Bot.vue'
 
 // 保存搜索结果
-const books = ref([]);  
+const books = ref([]);
 const router = useRouter(); // 初始化 router
 const route = useRoute(); // 获取当前路由
 
@@ -106,13 +106,19 @@ const navigateToDetail = (fileId: number) => {
 .background-blur {
   position: relative;
 }
+
 .background {
-  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png'); /* 正确的背景图片设置 */
-  background-size: cover; /* 背景图片自动适应容器 */
-  background-position: center; /* 背景居中显示 */
-  border-radius: 16px; /* 圆角 */
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  /* 正确的背景图片设置 */
+  background-size: cover;
+  /* 背景图片自动适应容器 */
+  background-position: center;
+  /* 背景居中显示 */
+  border-radius: 16px;
+  /* 圆角 */
   padding: 20px;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -164,6 +170,7 @@ const navigateToDetail = (fileId: number) => {
   width: 100%;
   height: auto;
   flex-grow: 1;
+  max-height: 300px;
 }
 
 .no-content {
@@ -172,6 +179,4 @@ const navigateToDetail = (fileId: number) => {
   text-align: center;
   padding: 50px 0;
 }
-
-
 </style>

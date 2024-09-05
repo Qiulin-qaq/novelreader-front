@@ -42,3 +42,6 @@ export const cancelStarService = (bookId) => {
         }
     })
 }
+export const isStarredService = (bookId) => {
+    return request.get(`/books/status/${bookId}`)
+}

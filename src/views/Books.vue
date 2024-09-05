@@ -1,7 +1,9 @@
 <template>
-    <div class="background-blur">
+  <div class="background-blur">
 
-    
+    <div>
+      <Bot />
+    </div>
     <Navbar></Navbar>
     <div class="checkbox-container">
       <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
@@ -24,11 +26,12 @@
       </el-card>
     </div>
   </div>
-  
+
 </template>
 <script lang="ts" setup>
 import 'element-plus/dist/index.css';
 import Navbar from '@/components/NavBar.vue';
+import Bot from '@/components/Bot.vue'
 import { ref, computed, onMounted, watch } from 'vue';
 import { booksService } from '@/api/books';
 import { useBookStore } from '@/stores/book'
@@ -105,7 +108,7 @@ watch(filteredBooks, (newVal, oldVal) => {
   margin-left: 100px;
   margin-top: 150px;
   padding-bottom: 50px;
-  
+
   padding: 20px;
   border-radius: 10px;
 }
@@ -256,6 +259,4 @@ watch(filteredBooks, (newVal, oldVal) => {
   filter: blur(10px);
   z-index: -1;
 }
-
 </style>
-

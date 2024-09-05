@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { bookdetailService, cancelStarService, getBookChaptersService, starService } from '@/api/books';
+import { bookdetailService, cancelStarService, getBookChaptersService, isStarredService, starService } from '@/api/books';
 import NavBar from '@/components/NavBar.vue';
 import { onMounted, ref } from 'vue';
 import 'element-plus/dist/index.css';
@@ -14,7 +14,7 @@ const toggleBookShelf = async () => {
         if (!isInBookShelf.value) {
             const starResponse = await starService(bookId)
             console.log(starResponse)
-            if (starResponse.code===200) {
+            if (starResponse.code === 200) {
                 ElMessage({
                     message: '已加入书架',
                     type: 'success'
@@ -27,7 +27,7 @@ const toggleBookShelf = async () => {
         }
         else {
             const cancelStarResponse = await cancelStarService(bookId)
-            if (cancelStarResponse.code===200) {
+            if (cancelStarResponse.code === 200) {
                 ElMessage({
                     message: '已从书架中移除',
                     type: 'warning'
@@ -69,6 +69,15 @@ const startReading = () => {
         ElMessage.error('章节数据尚未加载');
     }
 };
+const isStarred = async () => {
+    try {
+        const isStarredResponse = await isStarredService(bookId)
+        isInBookShelf.value = isStarredResponse.data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 const bookdetail = async () => {
 
@@ -76,10 +85,8 @@ const bookdetail = async () => {
         const bookresponse = await bookdetailService(bookId);
         const bookData = bookresponse.data[0];
 
-
-        isInBookShelf.value = bookData.isInBookShelf || false;
-
         img.value = bookData.picture;
+        console.log("img路径", img.value)
         bookDescription.value = bookData.description || "无描述";
         author.value = bookData.author || "未知作者";
         bookname.value = bookData.title || "无标题";
@@ -119,7 +126,7 @@ const chaptersdetail = async () => {
 onMounted(() => {
     bookdetail();
     chaptersdetail()
-    toggleBookShelf
+    isStarred();
 })
 </script>
 
@@ -127,9 +134,10 @@ onMounted(() => {
 
 <template>
     <NavBar></NavBar>
-
+    
     <div style="display: flex; align-items: flex-start;" class="background"> <!-- 新增容器，并设置为 Flexbox -->
-        <img src="/src/assets/png/logo.png" class="img">
+        <img :src="img || '/src/assets/png/logo.png'" class="img">
+        
         <!-- 添加 margin-right 来控制间距 -->
 
         <el-card class="card">
@@ -179,7 +187,7 @@ onMounted(() => {
 
 <style scope>
 .background {
-    background-image: url('../assets/png/5c880f7819c25.jpg');
+    background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -200,6 +208,7 @@ onMounted(() => {
     margin-top: 100px;
     margin-left: 200px;
     margin-right: 200px;
+    max-width: 200px;
 }
 
 .card {

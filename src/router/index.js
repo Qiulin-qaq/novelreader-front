@@ -18,24 +18,24 @@ const routes = [
     path: '/Main',
     name: 'Home',
     component: Home,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/search',
     name: 'searchPage',
     component: searchPage,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
   {
     path: '/books/:id',
     component: BookDetail,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
 
   },
   {
     path: '/books',
     component: Books,
-    // meta: { requiresAuth: true }}
+    meta: { requiresAuth: true }
   },
 
 
@@ -51,12 +51,12 @@ const routes = [
   {
     path: "/books/read/",
     component: BookRead,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   },
    {
     path:"/bookshelf",
     component:BookShelf,
-    // meta: { requiresAuth: true }
+    meta: { requiresAuth: true }
   }
  
   

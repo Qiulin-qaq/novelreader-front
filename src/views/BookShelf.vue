@@ -3,6 +3,9 @@
   <div id="NavBar">
     <Navbar />
   </div>
+  <div>
+    <Bot />
+  </div>
   <div class="background-blur">
     <div class="container">
       <el-button class="uploading-button" @click="dialog = true">上传小说</el-button>
@@ -52,6 +55,7 @@ import { useBookshelfStore } from "@/stores/bookshelf";
 import { ElMessage, ElNotification } from "element-plus";
 import axios from 'axios';
 import { useTokenStore } from "@/stores/token";  // 引入 tokenStore
+import Bot from '@/components/Bot.vue'
 
 const novels = ref([]); // 初始化为空数组
 const checkedtypes = ref([]);

@@ -132,7 +132,8 @@ const clearRegisterData = () => {
 
     
       .button {
-        width: 100%; // 确保按钮在表单容器内占满可用宽度
+        width: 100px; // 确保按钮在表单容器内占满可用宽度
+        margin-left: 0px;
       }
 
     .flex {
