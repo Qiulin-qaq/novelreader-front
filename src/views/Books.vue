@@ -5,8 +5,8 @@
       全选
     </el-checkbox>
     <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-      <el-checkbox v-for="type in types" :key="type" :label="type" :value="type">
-        {{ type }}
+      <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
+        {{ status }}
       </el-checkbox>
     </el-checkbox-group>
   </div>
@@ -14,7 +14,8 @@
   <el-divider />
   <!-- 显示过滤后的书籍 -->
   <div class="books-container ">
-    <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id" @click="$router.push(`/books/${book.id}`)">
+    <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id"
+      @click="$router.push(`/books/${book.id}`)">
       <template #header>{{ book.title }}</template>
       <img src="/src/assets//png/logo.png" style="width: 100%" alt="Cover Image" />
     </el-card>
@@ -25,15 +26,15 @@ import 'element-plus/dist/index.css';
 import Navbar from '@/components/NavBar.vue';
 import { ref, computed, onMounted, watch } from 'vue';
 import { booksService } from '@/api/books';
-import {useBookStore} from '@/stores/book'
+import { useBookStore } from '@/stores/book'
 
 const novels = ref([
 
 ]); // 初始化为空数组
 const checkedtypes = ref([]);
 const checkAll = ref(false);
-const types = ['本站推荐', '用户导入']; // 代表两种类型
-const isIndeterminate = computed(() => checkedtypes.value.length > 0 && checkedtypes.value.length < types.length);
+const statuses = ['本站推荐', '用户导入']; // 代表两种类型
+const isIndeterminate = computed(() => checkedtypes.value.length > 0 && checkedtypes.value.length < statuses.length);
 const bookStore = useBookStore()
 
 // 从后端获取书籍数据
@@ -42,16 +43,16 @@ const getBooks = async () => {
     const response = await booksService();
     novels.value = response.data.map(book => ({
       ...book,
-      typeLabel: book.type ? '本站推荐' : '用户导入'  // 添加标签转换
+      typeLabel: book.status ? '本站推荐' : '用户导入'  // 添加标签转换
     }));
     console.log("书籍数据加载成功:", novels.value);
 
-    novels.value.forEach(novel=>{
+    novels.value.forEach(novel => {
       bookStore.addBookId(novel.id)
     })
 
 
-    
+
   } catch (error) {
     console.error("加载书籍数据失败:", error);
   }
@@ -64,17 +65,17 @@ onMounted(() => {
 const filteredBooks = computed(() => {
   if (checkedtypes.value.length === 0) return novels.value;
   return novels.value.filter(book =>
-    checkedtypes.value.includes(book.type ? '本站推荐' : '用户导入') // 使用标签过滤
+    checkedtypes.value.includes(book.status ? '本站推荐' : '用户导入') // 使用标签过滤
   );
 });
 
 const handleCheckAllChange = (value) => {
-  checkedtypes.value = value ? types.slice() : []; // 复制或清空
+  checkedtypes.value = value ? statuses.slice() : []; // 复制或清空
   console.log("全选状态改变:", checkedtypes.value); // 添加调试信息
 };
 
 const handleCheckedtypesChange = (value) => {
-  checkAll.value = value.length === types.length;
+  checkAll.value = value.length === statuses.length;
   console.log("多选框改变:", checkedtypes.value); // 添加调试信息
 };
 
@@ -139,7 +140,7 @@ watch(filteredBooks, (newVal, oldVal) => {
   /* 确保内容不会溢出 */
   transition: transform 0.2s, box-shadow 0.2s;
   /* 添加动画效果 */
-  
+
   cursor: pointer;
 
 }

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { bookdetailService, getBookChaptersService } from '@/api/books';
+import { bookdetailService, cancelStarService, getBookChaptersService, starService } from '@/api/books';
 import NavBar from '@/components/NavBar.vue';
 import { onMounted, ref } from 'vue';
 import 'element-plus/dist/index.css';
@@ -8,19 +8,43 @@ import { useRoute, useRouter } from 'vue-router';
 
 const isInBookShelf = ref(false);
 
-const toggleBookShelf = () => {
-    if (isInBookShelf.value) {
-        ElMessage({
-            message: '已从书架中移除',
-            type: 'warning',
-        });
-    } else {
-        ElMessage({
-            message: '已加入书架',
-            type: 'success',
-        });
+const toggleBookShelf = async () => {
+    try {
+        console.log('bookId:', bookId)
+        if (!isInBookShelf.value) {
+            const starResponse = await starService(bookId)
+            console.log(starResponse)
+            if (starResponse.code===200) {
+                ElMessage({
+                    message: '已加入书架',
+                    type: 'success'
+                })
+                isInBookShelf.value = true
+            } else {
+                throw new Error('加入书架失败');
+            }
+
+        }
+        else {
+            const cancelStarResponse = await cancelStarService(bookId)
+            if (cancelStarResponse.code===200) {
+                ElMessage({
+                    message: '已从书架中移除',
+                    type: 'warning'
+                })
+                isInBookShelf.value = false
+            } else {
+                throw new Error('移除书架失败');
+            }
+
+        }
+
+
+    } catch (error) {
+        // 请求失败时显示错误消息
+        ElMessage.error('操作失败，请稍后重试');
+        console.error("收藏操作失败：", error);
     }
-    isInBookShelf.value = !isInBookShelf.value;
 };
 
 const chaptersData = ref([]);
@@ -53,7 +77,7 @@ const bookdetail = async () => {
         const bookData = bookresponse.data[0];
 
 
-
+        isInBookShelf.value = bookData.isInBookShelf || false;
 
         img.value = bookData.picture;
         bookDescription.value = bookData.description || "无描述";
@@ -64,6 +88,7 @@ const bookdetail = async () => {
     }
 
 }
+
 
 // 处理表格行点击事件
 const handleRowClick = (row) => {
@@ -94,6 +119,7 @@ const chaptersdetail = async () => {
 onMounted(() => {
     bookdetail();
     chaptersdetail()
+    toggleBookShelf
 })
 </script>
 
@@ -128,8 +154,7 @@ onMounted(() => {
                 <el-button :plain="true" @click="toggleBookShelf" type="primary" size="large">
                     {{ isInBookShelf ? '已加入书架' : '加入书架' }}
                 </el-button>
-                <el-button type="success" size="large"
-                    @click="startReading">开始阅读</el-button>
+                <el-button type="success" size="large" @click="startReading">开始阅读</el-button>
 
             </div>
 

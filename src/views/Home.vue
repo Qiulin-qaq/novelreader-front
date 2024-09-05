@@ -15,14 +15,7 @@
       <div id="Bot">
         <Bot />
       </div>
-      <div class="block text-center">
-
-        <el-carousel height="150px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3 class="small justify-center" text="2xl">{{ item }}</h3>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
+      
 
       <div class="container">
         <el-card class="fixed-card">
@@ -142,17 +135,18 @@ const navigateToDetail = (fileId: number) => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background: linear-gradient(135deg, #007bff, #00ff7f);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+
 }
 
 .welcome-animation h1 {
   font-size: 3rem;
-  color: #007bff;
-  animation: fadeInOut 3s ease-in-out;
+  color: #fff;
+  animation: fadeInOut 3s ease-in-out, scaleUp 3s ease-in-out;
 }
 
 /* 渐入渐出的动画效果 */
@@ -167,6 +161,36 @@ const navigateToDetail = (fileId: number) => {
 
   100% {
     opacity: 0;
+  }
+}
+
+/* 背景颜色渐变的动画 */
+@keyframes backgroundFade {
+  0% {
+    background: linear-gradient(135deg, #007bff, #00ff7f);
+  }
+
+  50% {
+    background: linear-gradient(135deg, #ff5722, #3f51b5);
+  }
+
+  100% {
+    background: linear-gradient(135deg, #673ab7, #00bcd4);
+  }
+}
+
+/* 文字缩放动画 */
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 

@@ -1,29 +1,15 @@
 <template>
   <div id="NavBar">
-    <Navbar/>
+    <Navbar />
   </div>
   <div class="container">
     <el-button class="uploading-button" @click="dialog = true">上传小说</el-button>
   </div>
   <!-- draggable 允许拖拽 -->
-  <el-dialog
-    v-model="dialog"
-    width="500"
-    title="上传小说"
-    draggable
-    @close="dialogClose"
-  >
+  <el-dialog v-model="dialog" width="500" title="上传小说" draggable @close="dialogClose">
     <el-form label-width="80">
-      <el-upload
-        v-model:file-list="fileList"
-        class="upload-demo"
-        :http-request="uploadFile"
-        :limit="1"
-        :on-exceed="uploadExceed"
-        :before-upload="beforeUpload"
-        accept=".txt"
-        :on-remove="uploadRemove"
-      >
+      <el-upload v-model:file-list="fileList" class="upload-demo" :http-request="uploadFile" :limit="1"
+        :on-exceed="uploadExceed" :before-upload="beforeUpload" accept=".txt" :on-remove="uploadRemove">
         <el-button type="primary">点击选择文件</el-button>
         <template #tip>
           <div class="el-upload__tip">请上传.txt文件,大小不超过30M</div>
@@ -33,16 +19,12 @@
   </el-dialog>
 
   <div class="checkbox-container">
-    <el-checkbox
-      v-model="checkAll"
-      :indeterminate="isIndeterminate"
-      @change="handleCheckAllChange"
-    >
+    <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate" @change="handleCheckAllChange">
       全选
     </el-checkbox>
     <el-checkbox-group v-model="checkedtypes" @change="handleCheckedtypesChange">
-      <el-checkbox v-for="type in types" :key="type" :label="type" :value="type">
-        {{ type }}
+      <el-checkbox v-for="status in statuses" :key="status" :label="status" :value="status">
+        {{ status }}
       </el-checkbox>
     </el-checkbox-group>
   </div>
@@ -50,12 +32,8 @@
   <el-divider />
   <!-- 显示过滤后的书籍 -->
   <div class="books-container">
-    <el-card
-      style="max-width: 480px"
-      v-for="book in filteredBooks"
-      :key="book.id"
-      @click="$router.push(`/books/${book.id}`)"
-    >
+    <el-card style="max-width: 480px" v-for="book in filteredBooks" :key="book.id"
+      @click="$router.push(`/books/${book.id}`)">
       <template #header>{{ book.title }}</template>
       <!-- 将图片路径替换为固定路径 -->
       <img src="/src/assets/png/logo.png" style="width: 100%" alt="Cover Image" />
@@ -76,8 +54,8 @@ import { useTokenStore } from "@/stores/token";  // 引入 tokenStore
 const novels = ref([]); // 初始化为空数组
 const checkedtypes = ref([]);
 const checkAll = ref(false);
-const types = ["本站推荐", "用户导入"]; // 代表两种类型
-const isIndeterminate = computed(() => checkedtypes.value.length > 0 && checkedtypes.value.length < types.length);
+const statuses = ["本站推荐", "用户导入"]; // 代表两种类型
+const isIndeterminate = computed(() => checkedtypes.value.length > 0 && checkedtypes.value.length < statuses.length);
 const bookStore = useBookshelfStore();
 const tokenStore = useTokenStore();  // 创建 tokenStore 的实例
 
@@ -87,7 +65,7 @@ const getBooks = async () => {
     const response = await booksshelfService();
     novels.value = response.data.map((book) => ({
       ...book,
-      typeLabel: book.type ? "本站推荐" : "用户导入", // 添加标签转换
+      typeLabel: book.status ? "本站推荐" : "用户导入", // 添加标签转换
     }));
     novels.value.forEach((novel) => {
       bookStore.addBookId(novel.id);
@@ -104,16 +82,16 @@ onMounted(() => {
 const filteredBooks = computed(() => {
   if (checkedtypes.value.length === 0) return novels.value;
   return novels.value.filter((book) =>
-    checkedtypes.value.includes(book.type ? "本站推荐" : "用户导入")
+    checkedtypes.value.includes(book.tystatuspe ? "本站推荐" : "用户导入")
   );
 });
 
 const handleCheckAllChange = (value) => {
-  checkedtypes.value = value ? types.slice() : []; // 复制或清空
+  checkedtypes.value = value ? statuses.slice() : []; // 复制或清空
 };
 
 const handleCheckedtypesChange = (value) => {
-  checkAll.value = value.length === types.length;
+  checkAll.value = value.length === statuses.length;
 };
 
 // 对话框
@@ -218,12 +196,12 @@ const uploadRemove = () => {
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 50px;
-  row-gap: 150px;
+  row-gap: 90px;
   margin-left: 100px;
-  margin-top: 150px;
+  margin-top: 60px;
   padding-bottom: 50px;
   background-color: #f8f9fa;
-  padding: 20px;
+  padding: 0px;
   border-radius: 10px;
 }
 
@@ -275,7 +253,8 @@ const uploadRemove = () => {
 
 .uploading-button {
   position: absolute;
-  top: 75px;
-  right: 20px;
+  top: 120px;
+  right: 200px;
+  
 }
 </style>

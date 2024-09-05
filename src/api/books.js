@@ -26,3 +26,19 @@ export const getBookChaptersService = (bookId) => {
     return request.get(`/chapters/novel/${bookId}`)
 
 }
+
+export const starService = (bookId) => {
+    return request.get('/books/star', {
+        params: {
+            book_id: bookId
+        }
+    })
+}
+
+export const cancelStarService = (bookId) => {
+    return request.get('/books/cancel_star', {
+        params: {
+            book_id: bookId
+        }
+    })
+}
