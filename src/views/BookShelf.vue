@@ -1,8 +1,9 @@
 <template>
+
+  <div id="NavBar">
+    <Navbar />
+  </div>
   <div class="background-blur">
-    <div id="NavBar">
-      <Navbar />
-    </div>
     <div class="container">
       <el-button class="uploading-button" @click="dialog = true">上传小说</el-button>
     </div>
@@ -36,7 +37,7 @@
       <el-card style="max-width: 480px;" v-for="book in filteredBooks" :key="book.id"
         @click="$router.push(`/books/${book.id}`)">
         <template #header>{{ book.title }}</template>
-        <img :src="book.picture" style="width: 100%" alt="Cover Image" />
+        <img :src="book.picture || '/src/assets/png/logo.png'" style="width: 100%" alt="Cover Image" />
       </el-card>
     </div>
   </div>
@@ -192,27 +193,6 @@ const uploadRemove = () => {
 </script>
 
 <style scoped>
-.background-blur {
-  position: relative;
-}
-
-.background-blur::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
-  /* 背景图片 */
-  background-size: cover;
-  background-position: center;
-  filter: blur(10px);
-  /* 仅模糊背景图片 */
-  z-index: -1;
-  /* 确保背景在所有内容的后面 */
-}
-
 .books-container {
   display: flex;
   flex-wrap: wrap;
@@ -222,7 +202,7 @@ const uploadRemove = () => {
   margin-left: 100px;
   margin-top: 60px;
   padding-bottom: 50px;
-  background-color: #f8f9fa;
+
   padding: 0px;
   border-radius: 10px;
 }
@@ -279,8 +259,40 @@ const uploadRemove = () => {
 
 .uploading-button {
   position: absolute;
-  top: 120px;
+  top: 30px;
   right: 200px;
 
+}
+
+
+/* 背景图片容器 */
+.background-blur {
+  position: relative;
+}
+
+/* 卡片背景样式 */
+.background {
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 70px;
+  width: 100;
+}
+
+/* 背景模糊效果 */
+.background-blur::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
 }
 </style>

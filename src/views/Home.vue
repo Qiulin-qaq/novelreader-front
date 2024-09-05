@@ -1,11 +1,11 @@
 <template>
   <div>
-    
+
     <div v-if="showAnimation" class="welcome-animation">
       <h1>Welcome to AI-Novel Reader</h1>
     </div>
 
-    
+
     <div v-if="!showAnimation" class="main-content">
       <div id="NavBar">
         <NavBar />
@@ -128,9 +128,11 @@ onMounted(() => {
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -200,7 +202,7 @@ onMounted(() => {
 .main-content {
   position: relative;
   z-index: 1;
-  
+
 }
 
 /* 背景图片容器 */
@@ -240,7 +242,7 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  
+
   border-radius: 16px;
 }
 
@@ -282,4 +284,6 @@ onMounted(() => {
   height: auto;
   max-height: 300px;
 }
+
+
 </style>
