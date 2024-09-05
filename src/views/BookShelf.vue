@@ -1,4 +1,5 @@
 <template>
+  <div class="background-blur">
   <div id="NavBar">
     <Navbar />
   </div>
@@ -38,7 +39,7 @@
       <!-- 将图片路径替换为固定路径 -->
       <img src="/src/assets/png/logo.png" style="width: 100%" alt="Cover Image" />
     </el-card>
-  </div>
+  </div></div>
 </template>
 
 <script lang="ts" setup>
@@ -191,6 +192,22 @@ const uploadRemove = () => {
 </script>
 
 <style scoped>
+.background-blur {
+  position: relative;
+}
+.background-blur::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png'); /* 背景图片 */
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px); /* 仅模糊背景图片 */
+  z-index: -1; /* 确保背景在所有内容的后面 */
+}
 .books-container {
   display: flex;
   flex-wrap: wrap;

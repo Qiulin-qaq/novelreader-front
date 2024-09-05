@@ -6,44 +6,28 @@
     </div>
 
     <!-- 当动画结束时，显示主内容 -->
-    <div v-if="!showAnimation">
+    <div v-if="!showAnimation" class="main-content">
       <div id="NavBar">
         <NavBar />
-        <router-view />
       </div>
 
-      <div id="Bot">
-        <Bot />
-      </div>
-      
+      <div class="background-blur">
+        <div>
+          <Bot />
+        </div>
 
-      <div class="container">
-        <el-card class="fixed-card">
-          <div class="classic-book-section">
-            <p class="font">经典书目</p>
-          </div>
-
-          <!-- 如果有书籍内容，显示书籍列表；否则显示提示消息或空白卡片 -->
-          <div v-if="books.length > 0" id="BookList" class="book-list">
-            <el-card v-for="(book, index) in books" :key="index" class="book-card" @click="navigateToDetail(book.id)"
-              style="cursor: pointer;">
-              <template #header>{{ book.title }}</template>
-              <img src="/src/assets/png/logo.png" alt="Book Cover" class="book-cover" />
-            </el-card>
-          </div>
-          <div v-else class="book-list">
-            <!-- 空白卡片 -->
-            <el-card class="book-card">
-              <template #header>暂无内容</template>
-              <img src="/src/assets/png/logo.png" alt="Placeholder" class="book-cover" />
-            </el-card>
-          </div>
-
-          <!-- 分页组件 -->
-          <div id="Pagination" class="pagination-bottom">
-            <Pagination @update:page="handlePageUpdate" />
-          </div>
-        </el-card>
+        <div class="carousel-container">
+          <el-card class="background">
+            <el-carousel :autoplay="true" arrow="always" type="card" height="400px">
+              <el-carousel-item v-for="(book, index) in books" :key="index">
+                <el-card class="book-card" @click="navigateToDetail(book.id)">
+                  <template #header>{{ book.title }}</template>
+                  <img :src="book.picture || '/src/assets/png/logo.png'" alt="Book Cover" class="book-cover" />
+                </el-card>
+              </el-carousel-item>
+            </el-carousel>
+          </el-card>
+        </div>
       </div>
     </div>
   </div>
@@ -53,7 +37,6 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import Pagination from '@/components/Pagination.vue';
 import { useTokenStore } from '@/stores/token'; // 导入 useTokenStore
 
 // 动画显示与隐藏
@@ -68,21 +51,15 @@ onMounted(() => {
 
 // 保存书籍列表数据
 const books = ref([]);
-// 当前页码
-const currentPage = ref(1);
-// 总书籍数
-const totalBooks = ref(0);
-// 每页显示的书籍数量
-const pageSize = ref(4);
-
-const router = useRouter(); // 初始化 router
 
 // 获取 token
 const tokenStore = useTokenStore();
 const token = tokenStore.token;
 
-// 获取书籍数据，传递分页参数
-const fetchBooks = async (page: number) => {
+const router = useRouter(); // 初始化 router
+
+// 获取书籍数据，固定分页为1
+const fetchBooks = async () => {
   // 如果没有token，重定向到登录页面
   if (!token) {
     console.warn("No token found, redirecting to login page.");
@@ -91,44 +68,40 @@ const fetchBooks = async (page: number) => {
   }
 
   try {
+    // 请求第一页的书籍数据
     const response = await axios.get('/api/Main', {
-      params: { page: page, pageSize: pageSize.value },  // 传递分页参数
+      params: { page: 1, pageSize: 4 }, // 固定请求第一页的内容
       headers: {
-        'Authorization': `Bearer ${token}`  // 添加 Authorization 头
-      }
+        Authorization: `Bearer ${token}`, // 添加 Authorization 头
+      },
     });
     const fetchedBooks = response.data.data;
-    totalBooks.value = response.data.total || 0; // 设置总书籍数量
 
     if (fetchedBooks && fetchedBooks.length > 0) {
-      books.value = fetchedBooks;
+      books.value = fetchedBooks; // 更新书籍列表
     } else {
-      console.log("No books found, displaying placeholder");
+      console.log('No books found, displaying placeholder');
       books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
     }
   } catch (error) {
-    console.error("Failed to fetch books:", error.message);
+    console.error('Failed to fetch books:', error.message);
     books.value = [{ title: '暂无内容', picture: '/src/assets/png/logo.png' }];
   }
 };
 
-// 处理页码更新
-const handlePageUpdate = (newPage: number) => {
-  currentPage.value = newPage;
-  fetchBooks(newPage); // 根据新的页码获取数据
-};
-
-// 初始化时加载第一页的数据
-fetchBooks(currentPage.value);
-
 // 页面导航函数
-const navigateToDetail = (fileId: number) => {
-  router.push(`/books/${fileId}`);
+const navigateToDetail = (id: number) => {
+  router.push(`/books/${id}`);
 };
+
+// 初始加载时调用 fetchBooks
+onMounted(() => {
+  fetchBooks();
+});
 </script>
 
 <style scoped>
-/* 动画部分 */
+/* 动画部分样式 */
 .welcome-animation {
   position: fixed;
   top: 0;
@@ -139,6 +112,7 @@ const navigateToDetail = (fileId: number) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
   z-index: 9999;
 
 }
@@ -154,11 +128,9 @@ const navigateToDetail = (fileId: number) => {
   0% {
     opacity: 0;
   }
-
   50% {
     opacity: 1;
   }
-
   100% {
     opacity: 0;
   }
@@ -194,102 +166,110 @@ const navigateToDetail = (fileId: number) => {
   }
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* 背景颜色渐变的动画 */
+@keyframes backgroundFade {
+  0% {
+    background: linear-gradient(135deg, #007bff, #00ff7f);
+  }
+
+  50% {
+    background: linear-gradient(135deg, #ff5722, #3f51b5);
+  }
+
+  100% {
+    background: linear-gradient(135deg, #673ab7, #00bcd4);
+  }
+}
+
+/* 文字缩放动画 */
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 主内容部分样式 */
+.main-content {
   position: relative;
-  margin-top: 100px;
-  height: 600px;
-  /* Adjust the container height as needed */
+  z-index: 1;
+  padding-top: 60px;
+}
+
+/* 背景图片容器 */
+.background-blur {
+  position: relative;
+}
+
+/* 卡片背景样式 */
+.background {
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
   padding: 20px;
-  /* Compensate for the fixed navbar height */
 }
 
-.fixed-card {
-  width: 80%;
-  height: 100%;
-  /* Make the card take the full height of the container */
-  max-width: 1200px;
-  /* Optional: set a max width */
-  display: grid;
-  grid-template-rows: 60px 1fr auto;
-  margin-top: 0;
-  overflow: hidden;
-  /* Prevent content overflow */
-  position: relative;
-  /* Ensure that the pagination can be absolutely positioned relative to the card */
+/* 背景模糊效果 */
+.background-blur::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://revo.zongheng.com/www/2024/images/75caf4c.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
 }
 
-.classic-book-section {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  padding: 10px 40px;
-  margin: 10px 0;
-  font-family: 'Georgia', serif;
-}
-
-.book-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.book-card {
+/* 轮播容器样式 */
+.carousel-container {
   width: 100%;
-  height: 350px;
-  /* Adjust card height */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+}
+
+/* 书籍卡片样式 */
+.book-card {
+  width: 300px;
+  height: 100%;
+  border-radius: 16px;
   overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
 }
 
+/* 卡片悬停效果 */
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 书籍封面样式 */
 .book-cover {
   width: 100%;
-  height: auto;
-  flex-grow: 1;
+  height: 250px;
+  object-fit: cover;
 }
 
-.book-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.pagination-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
+/* 轮播项居中对齐 */
+.el-carousel__item {
   display: flex;
   justify-content: center;
-  padding: 50px 0;
   align-items: center;
-}
-
-.demonstration {
-  color: var(--el-text-color-secondary);
-}
-
-.el-carousel__item h3 {
-  color: #475669;
-  opacity: 0.75;
-  line-height: 150px;
-  margin: 0;
-  text-align: center;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
 }
 </style>
