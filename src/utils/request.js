@@ -34,15 +34,16 @@ instance.interceptors.response.use(
 instance.interceptors.request.use(
   (config) => {
     const tokenStore = useTokenStore()
+    const token = tokenStore.getToken()
 
-    if (tokenStore.token) {
-      config.headers.Authorization = 'Bearer ' + tokenStore.token
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token
     }
     return config
 
   },
   (err) => {
-    Promise.reject(err)
+    return Promise.reject(err)
   }
 )
 

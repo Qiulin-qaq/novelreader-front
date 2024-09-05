@@ -37,7 +37,9 @@ const bookread = async () => {
     bookinfo.value.title = response.data.title;
 
     // 处理换行符，将 \n\n 替换为 <br>
-    bookinfo.value.content = response.data.content.replace(/\n\n/g, '<br><br>');
+    bookinfo.value.content = response.data.content.split('\n')
+      .map(paragraph => `<p style="text-indent: 2em; margin: 10px 0;">${paragraph}</p>`)
+      .join('').replace(/\n\n/g, '<br><br>');
   } catch (err) {
     ElMessage.error('加载书籍数据失败');
     bookinfo.value.title = '加载失败';
@@ -101,7 +103,7 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <el-card style="max-width: 1000px;">
+    <el-card>
       <template #header>
         <div class="card-header">
           <span @click="router.back()" class="back">
@@ -128,13 +130,6 @@ onMounted(() => {
           p-id="4248"></path>
       </svg>
 
-      <!-- <svg t="1725455287334" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-        p-id="6282" width="32" height="32" @click="backtoDetail">
-        <path
-          d="M790.4 992H233.6c-38.4 0-70.4-32-70.4-70.4V566.4H86.4c-6.4 0-12.8-3.2-16-6.4-32-32-32-83.2 0-115.2L457.6 57.6c32-32 83.2-32 115.2 0L960 444.8c32 32 32 83.2 0 115.2-3.2 3.2-9.6 6.4-16 6.4h-76.8v355.2C864 960 832 992 790.4 992zM96 515.2h89.6c12.8 0 25.6 9.6 25.6 25.6v380.8c0 12.8 9.6 22.4 22.4 22.4h556.8c12.8 0 22.4-9.6 22.4-22.4V540.8c0-12.8 9.6-25.6 25.6-25.6H928c6.4-12.8 6.4-28.8-6.4-38.4L534.4 89.6c-12.8-12.8-32-12.8-44.8 0L102.4 476.8c-9.6 9.6-12.8 25.6-6.4 38.4z"
-          p-id="6283"></path>
-      </svg> -->
-
       <svg t="1725456162083" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
         p-id="6493" width="32" height="32" @click="backtoDetail">
         <path
@@ -156,28 +151,37 @@ onMounted(() => {
   justify-content: center;
   /* 水平居中 */
 
-  height: 100vh;
+  height: 100%;
   /* 确保容器占满视口高度 */
   background-color: rgb(187, 191, 187);
   /* 背景色 */
   padding: 20px;
+  height: 100%;
+
 }
 
 .el-card {
   flex: 0 1 60%;
   /* 卡片的大小和可伸缩性 */
   margin-right: 20px;
+  max-width: 1000px;
+
+
+
 }
 
 .content {
   font-family: 'Arial', sans-serif;
   font-size: 20px;
-  line-height: 1.6;
+  line-height: 1.8;
   color: #333;
   text-align: justify;
   padding: 20px;
   word-spacing: 10px;
   letter-spacing: 0.5px;
+  height: calc(100vh - 200px);
+  /* 根据窗口高度动态计算内容高度 */
+  overflow-y: auto;
 }
 
 .button-group {

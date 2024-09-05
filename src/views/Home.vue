@@ -117,6 +117,7 @@ const navigateToDetail = (fileId: number) => {
   flex-direction: column;
   align-items: center;
   position: relative; 
+  margin-top: 100px;
   height: 600px; /* Adjust the container height as needed */
   padding: 20px; /* Compensate for the fixed navbar height */
 }
@@ -153,6 +154,16 @@ const navigateToDetail = (fileId: number) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 10px;
+  /* 圆角效果 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 添加阴影效果 */
+  overflow: hidden;
+  /* 确保内容不会溢出 */
+  transition: transform 0.2s, box-shadow 0.2s;
+  /* 添加动画效果 */
+  
+  cursor: pointer;
 }
 
 .book-cover {
@@ -166,6 +177,12 @@ const navigateToDetail = (fileId: number) => {
   color: #999;
   text-align: center;
   padding: 50px 0;
+}
+.book-card:hover {
+  transform: translateY(-10px);
+  /* 悬停时轻微抬升 */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  /* 悬停时增加阴影 */
 }
 
 .pagination-bottom {

@@ -111,12 +111,13 @@ const clearRegisterData = () => {
 <style lang="scss" scoped>
 /* 样式 */
 .login-page {
-  height: 100vh;
+  height: 888px;
   background-color: #fff;
-
+  overflow: hidden;
   .bg {
     background: url("@/assets/login_bg.jpg") no-repeat center / cover;
     border-radius: 0 20px 20px 0;
+    height: 100%;
   }
 
   .form {

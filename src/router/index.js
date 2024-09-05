@@ -18,7 +18,7 @@ const routes = [
     path: '/Main',
     name: 'Home',
     component: Home,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/search',

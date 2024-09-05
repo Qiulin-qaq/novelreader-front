@@ -5,20 +5,15 @@
       <el-menu-item index="0">
         <img style="width: 50px;" src="/src/assets/png/logo.png" alt="logo" />
       </el-menu-item>
-      <el-menu-item index="1" @click="navigateTo('/Main')">主页</el-menu-item>
-      <el-menu-item index="2" @click="navigateTo('/bookshelf')">书架</el-menu-item>
-      <el-menu-item index="3" @click="navigateTo('/books')">书库</el-menu-item>
+      <el-menu-item index="1" @click="navigateTo('/Main', '1')">主页</el-menu-item>
+      <el-menu-item index="2" @click="navigateTo('/bookshelf', '2')">书架</el-menu-item>
+      <el-menu-item index="3" @click="navigateTo('/books', '3')">书库</el-menu-item>
     </div>
 
     <div class="right-menu">
       <div>
-        <el-input
-          v-model="searchQuery"
-          placeholder="搜索..."
-          @keyup.enter="handleSearch"
-          clearable
-          @clear="handleSearchClear"
-        />
+        <el-input v-model="searchQuery" placeholder="搜索..." @keyup.enter="handleSearch" clearable
+          @clear="handleSearchClear" />
       </div>
       <el-sub-menu index="4">
         <template #title>设置</template>
@@ -39,13 +34,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useFontSizeStore } from '@/stores/fontSizeStore';
 import { useThemeStore } from '@/stores/themeStore';
 
 const activeIndex = ref('1');
 const router = useRouter();
+const route = useRoute();
 const fontSizeStore = useFontSizeStore();
 const themeStore = useThemeStore();
 
@@ -57,7 +53,20 @@ const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
 
-const navigateTo = (path: string) => {
+// 根据当前路径动态设置 activeIndex
+const setActiveIndexByRoute = () => {
+  const path = route.path;
+  if (path === '/Main') {
+    activeIndex.value = '1';
+  } else if (path === '/bookshelf') {
+    activeIndex.value = '2';
+  } else if (path === '/books') {
+    activeIndex.value = '3';
+  }
+};
+
+const navigateTo = (path: string, index: string) => {
+  activeIndex.value = index
   router.push(path);
 };
 
@@ -81,9 +90,17 @@ const handleSearchClear = () => {
   searchQuery.value = '';
   router.push({ path: '/search' });
 };
+
+onMounted(()=>{
+  setActiveIndexByRoute();
+})
+
+watch(route, () => {
+  setActiveIndexByRoute();
+});
 </script>
 
-<style>
+<style scope>
 .el-menu-demo {
   display: flex;
   justify-content: space-between;
